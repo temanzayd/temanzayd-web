@@ -8,70 +8,74 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
-        .mustard-brand { color: #d99a0d; } /* Mustard yang lebih deep agar kontras di latar putih */
+        .mustard-brand { color: #d99a0d; }
         .bg-mustard { background-color: #f2b84b; color: #1a1a1a; }
-        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: 0.3s; }
+        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: 0.3s; }
         .glass-card:active { transform: scale(0.98); background: #fafafa; }
-        .nav-item { color: #888; transition: 0.3s; }
-        .nav-item.active { color: #d99a0d; font-weight: 800; border-bottom: 3px solid #f2b84b; }
+        .nav-item { color: #888; transition: 0.3s; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        .nav-item.active { color: #d99a0d; border-bottom: 3px solid #f2b84b; }
         .page { display: none; }
         .page.active { display: block; animation: slideUp 0.4s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        select, input { border: 1px solid #eee !important; }
+        .icon-box { width: 32px; height: 32px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; items-center: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md px-4 py-4 flex justify-around text-[10px] font-bold uppercase tracking-widest border-b border-gray-100">
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md px-4 py-4 flex justify-around border-b border-gray-100">
         <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 active">Beranda</button>
         <button onclick="showPage('about')" id="nav-about" class="nav-item py-2">Mitra</button>
         <button onclick="showPage('program')" id="nav-program" class="nav-item py-2">Aksi</button>
         <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2">Donasi</button>
     </nav>
 
-    <main class="flex-grow p-5 space-y-5">
+    <main class="flex-grow p-5 space-y-6">
         
         <section id="home" class="page active space-y-5">
-            <div class="text-center py-6">
+            <div class="text-center py-4">
                 <img src="logo.png" alt="Logo" class="w-20 mx-auto mb-4">
-                <h1 class="text-3xl font-black italic uppercase tracking-tighter leading-none text-black">TEMAN<span class="mustard-brand">ZAYD</span></h1>
-                <p class="text-[7px] tracking-[0.4em] uppercase opacity-40 mt-2 font-bold italic">Est. 2021 • Berbagi Bersama Untuk Sesama</p>
+                <h1 class="text-3xl font-black italic uppercase tracking-tighter text-black">TEMAN<span class="mustard-brand">ZAYD</span></h1>
+                <p class="text-[8px] tracking-[0.3em] uppercase opacity-40 mt-1 font-bold italic">Berbagi Bersama Untuk Sesama</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="glass-card p-5 rounded-3xl text-center bg-amber-50/30 border-b-2 border-f2b84b">
-                    <div class="text-2xl font-black mustard-brand">5.000+</div>
-                    <div class="text-[8px] uppercase tracking-widest opacity-60 font-black leading-tight">Penerima Manfaat</div>
+                <div class="glass-card p-5 rounded-3xl text-center border-b-4 border-f2b84b">
+                    <div class="text-2xl font-black mustard-brand">> 5.000+</div>
+                    <div class="text-[8px] uppercase tracking-widest opacity-60 font-black">Penerima Manfaat</div>
                 </div>
-                <div class="glass-card p-5 rounded-3xl text-center bg-amber-50/30 border-b-2 border-f2b84b">
-                    <div class="text-2xl font-black mustard-brand">20+</div>
-                    <div class="text-[8px] uppercase tracking-widest opacity-60 font-black leading-tight">Relawan Aktif</div>
+                <div class="glass-card p-5 rounded-3xl text-center border-b-4 border-f2b84b">
+                    <div class="text-2xl font-black mustard-brand">30+</div>
+                    <div class="text-[8px] uppercase tracking-widest opacity-60 font-black">Relawan Aktif</div>
                 </div>
             </div>
 
-            <div class="glass-card p-6 rounded-[2.5rem] relative overflow-hidden bg-white">
-                <div class="absolute top-0 right-0 p-4 opacity-5 font-black italic text-4xl">STORY</div>
-                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian</h3>
+            <div class="glass-card p-6 rounded-[2.5rem]">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian (2021)</h3>
                 <p class="text-[11px] leading-relaxed text-gray-600 italic">
-                    Lahir dari pengalaman pribadi <span class="font-bold text-black">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-black">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold text-black">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk meringankan beban para pejuang sehat lainnya.
+                    Lahir dari pengalaman pribadi <span class="font-bold text-black text-xs">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-black text-xs text-xs">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold text-black text-xs text-xs">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk menemani para pejuang sehat lainnya.
                 </p>
             </div>
 
             <div class="space-y-3">
-                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] px-2 opacity-40">Misi Kemanusiaan</h3>
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] px-2 opacity-40">Tujuan & Misi</h3>
                 <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-f2b84b/10 rounded-full flex items-center justify-center text-lg">🤝</div>
-                    <p class="text-[10px] text-gray-700 font-medium leading-snug">Dukungan langsung bagi pejuang sehat, pejuang nafkah, yatim, dhuafa, dan korban bencana.</p>
+                    <div class="icon-box text-sm">🤝</div>
+                    <p class="text-[10px] text-gray-700 font-medium">Memberikan dukungan langsung bagi pejuang sehat, nafkah, yatim, dhuafa, dan korban bencana.</p>
                 </div>
                 <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-f2b84b/10 rounded-full flex items-center justify-center text-lg">💎</div>
-                    <p class="text-[10px] text-gray-700 font-medium leading-snug">Mengedepankan prinsip transparansi, amanah, dan sinergi berkelanjutan.</p>
+                    <div class="icon-box text-sm">💎</div>
+                    <p class="text-[10px] text-gray-700 font-medium">Menyelenggarakan program pemberdayaan berkelanjutan dengan transparansi dan amanah.</p>
+                </div>
+                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
+                    <div class="icon-box text-sm">✨</div>
+                    <p class="text-[10px] text-gray-700 font-medium">Menyebarkan nilai kebaikan melalui dakwah dan penggalangan semangat gotong royong.</p>
                 </div>
             </div>
         </section>
 
         <section id="about" class="page">
-            <h2 class="text-xl font-black italic text-black uppercase tracking-tighter mb-6 px-2">Sinergi <span class="mustard-brand">Kolaborasi</span></h2>
+            <h2 class="text-xl font-black italic text-black uppercase tracking-tighter mb-2 px-2 text-center">Sinergi <span class="mustard-brand">Kolaborasi</span></h2>
+            <p class="text-[9px] text-center uppercase opacity-40 tracking-widest mb-6 font-bold">Mitra Strategis TemanZayd</p>
             <div class="grid grid-cols-2 gap-3" id="mitra-grid"></div>
         </section>
 
@@ -81,60 +85,70 @@
         </section>
 
         <section id="donation" class="page space-y-6 pt-4">
-            <div class="glass-card p-8 rounded-[3rem] text-center border-t-4 border-f2b84b">
-                <div class="bg-gray-50 p-3 rounded-2xl inline-block mb-4 border border-gray-100">
+            <div class="glass-card p-8 rounded-[3rem] text-center border-t-4 border-f2b84b shadow-xl">
+                <div class="bg-gray-50 p-3 rounded-3xl inline-block mb-4 border border-gray-100">
                     <img src="qr.jpg" alt="QR" class="w-40 h-40 object-contain">
                 </div>
-                <p class="text-[9px] opacity-50 uppercase tracking-widest mb-1 font-bold">Bank Syariah Indonesia (BSI)</p>
+                <p class="text-[9px] opacity-50 uppercase tracking-widest mb-1 font-bold italic">Bank Syariah Indonesia (BSI)</p>
                 <p class="text-2xl font-mono font-black text-black">7326328938</p>
                 <p class="text-[10px] font-black mustard-brand uppercase mt-1">a.n TEMANZAYD</p>
             </div>
 
-            <form id="confirmForm" class="space-y-3">
-                <div class="bg-gray-50 rounded-3xl overflow-hidden divide-y divide-gray-200 border border-gray-100">
+            <form id="confirmForm" class="space-y-4">
+                <div class="bg-gray-50 rounded-3xl overflow-hidden divide-y divide-gray-200 border border-gray-100 shadow-inner">
                     <input type="text" id="nama" placeholder="Nama Donatur" required class="w-full p-4 bg-transparent outline-none text-xs text-black">
                     <input type="number" id="nominal" placeholder="Nominal Rp" required class="w-full p-4 bg-transparent outline-none text-xs text-black">
-                    <select id="program_tujuan" required class="w-full p-4 bg-transparent outline-none text-xs text-gray-500">
-                        <option value="" disabled selected>Pilih Program</option>
+                    <select id="program_tujuan" required class="w-full p-4 bg-transparent outline-none text-xs text-gray-500 font-bold">
+                        <option value="" disabled selected>Pilih Program Donasi</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[10px] shadow-lg shadow-yellow-600/20">Konfirmasi WhatsApp</button>
+                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[10px] shadow-lg shadow-yellow-600/20 active:scale-95 transition">Konfirmasi WhatsApp</button>
             </form>
         </section>
     </main>
 
-    <footer class="py-10 text-center opacity-30 text-[7px] font-bold tracking-[0.5em] uppercase text-black">
+    <footer class="py-10 text-center opacity-30 text-[7px] font-bold tracking-[0.5em] uppercase text-black italic">
         Jabodetabek • Riau • Lampung
     </footer>
 
     <script>
         const mitras = ["Adara Relief", "KNRP", "Warung Relawan", "Cahaya Madani", "Gemma Insani", "Bunda Peduli", "ASF Berbagi", "Sahabat Peduli", "RSCM Jakarta", "AsySyifa RSCM", "Pondok FORDAI", "Ade & Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo", "Perindu Syurga", "Belajar Ceria", "MRI JakBar", "MRI Cimahi", "The Glow Room", "Hanania Travel", "IAP Palestine", "Purple Fighter", "Career Class", "Life For Ummah"];
-        const progs = ["Susu Kebaikan", "Palestina", "Bulir Beras", "Kotak Makan", "Borong Bareng", "Belanja Bareng", "Fighters Day", "Meet Fighters", "KolaborAksi", "Kado Santri", "Pejuang Sehat", "Pejuang Nafkah", "Jumat Berkah", "Penyintas"];
+        
+        const progs = [
+            {n: "Susu Kebaikan", i: "🍼"}, {n: "Palestina", i: "🇵🇸"}, {n: "Bulir Beras", i: "🌾"}, 
+            {n: "Kotak Makan", i: "🍱"}, {n: "Borong Bareng", i: "🛒"}, {n: "Belanja Bareng", i: "🛍️"}, 
+            {n: "Fighters Day", i: "🎈"}, {n: "Meet Fighters", i: "🤩"}, {n: "KolaborAksi", i: "🤝"}, 
+            {n: "Kado Santri", i: "🎁"}, {n: "Pejuang Sehat", i: "🏥"}, {n: "Pejuang Nafkah", i: "🛠️"}, 
+            {n: "Jumat Berkah", i: "🕌"}, {n: "Penyintas", i: "🤍"}
+        ];
 
+        // Render Mitra Grid - TANPA TEXT TZCOLLABORATION
         const mGrid = document.getElementById('mitra-grid');
         mitras.forEach(m => {
             mGrid.innerHTML += `
-                <div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-20 bg-white">
-                    <div class="text-[7px] font-black mustard-brand opacity-60 tracking-tighter">TZ COLLABORATION</div>
-                    <span class="text-[10px] font-bold leading-tight text-gray-800 truncate">${m}</span>
+                <div class="glass-card p-4 rounded-2xl flex items-center justify-center h-16 bg-white shadow-sm">
+                    <span class="text-[9px] font-extrabold text-center text-gray-700 leading-tight uppercase tracking-tighter">${m}</span>
                 </div>`;
         });
 
+        // Render Program Grid & Dropdown - DENGAN ICON
         const pGrid = document.getElementById('program-grid');
         const pSelect = document.getElementById('program_tujuan');
         progs.forEach(p => {
             pGrid.innerHTML += `
                 <div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-20 bg-white border-l-4 border-f2b84b">
-                    <div class="text-xs opacity-20">#</div>
-                    <span class="text-[10px] font-black uppercase italic text-gray-800 leading-tight">${p}</span>
+                    <div class="text-lg">${p.i}</div>
+                    <span class="text-[9px] font-black uppercase italic text-gray-800 leading-tight">${p.n}</span>
                 </div>`;
+            
             const opt = document.createElement('option');
-            opt.value = p; opt.text = p;
+            opt.value = p.n;
+            opt.text = `${p.i} ${p.n}`;
             pSelect.appendChild(opt);
         });
 
         const generalOption = document.createElement('option');
-        generalOption.value = "Sedekah Umum"; generalOption.text = "Sedekah Umum / Lainnya";
+        generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum / Lainnya";
         pSelect.appendChild(generalOption);
 
         function showPage(pId) {
@@ -147,7 +161,7 @@
 
         document.getElementById('confirmForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const text = `Konfirmasi Donasi TemanZayd%0ANama: ${document.getElementById('nama').value}%0ANominal: Rp${document.getElementById('nominal').value}%0AProgram: ${document.getElementById('program_tujuan').value}`;
+            const text = `Halo Admin Salma, saya ingin konfirmasi donasi.%0ANama: ${document.getElementById('nama').value}%0ANominal: Rp${document.getElementById('nominal').value}%0AProgram: ${document.getElementById('program_tujuan').value}`;
             window.location.href = `https://wa.me/6282261814595?text=${text}`;
         });
     </script>

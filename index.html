@@ -17,7 +17,7 @@
         .page { display: none; }
         .page.active { display: block; animation: slideUp 0.4s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .icon-box { width: 32px; height: 32px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; items-center: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+        .icon-box { width: 32px; height: 32px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -52,7 +52,7 @@
             <div class="glass-card p-6 rounded-[2.5rem]">
                 <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian (2021)</h3>
                 <p class="text-[11px] leading-relaxed text-gray-600 italic">
-                    Lahir dari pengalaman pribadi <span class="font-bold text-black text-xs">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-black text-xs text-xs">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold text-black text-xs text-xs">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk menemani para pejuang sehat lainnya.
+                    Lahir dari pengalaman pribadi <span class="font-bold text-black text-xs">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-black text-xs">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold text-black text-xs text-xs text-xs">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk menemani para pejuang sehat lainnya.
                 </p>
             </div>
 
@@ -80,29 +80,34 @@
         </section>
 
         <section id="program" class="page">
-            <h2 class="text-xl font-black italic text-black uppercase tracking-tighter mb-6 px-2">Aksi <span class="mustard-brand">Kebaikan</span></h2>
+            <h2 class="text-xl font-black italic text-black uppercase tracking-tighter mb-6 px-2 text-center">Aksi <span class="mustard-brand">Kebaikan</span></h2>
             <div class="grid grid-cols-2 gap-3" id="program-grid"></div>
         </section>
 
-        <section id="donation" class="page space-y-6 pt-4">
-            <div class="glass-card p-8 rounded-[3rem] text-center border-t-4 border-f2b84b shadow-xl">
-                <div class="bg-gray-50 p-3 rounded-3xl inline-block mb-4 border border-gray-100">
-                    <img src="qr.jpg" alt="QR" class="w-40 h-40 object-contain">
+        <section id="donation" class="page space-y-6 pt-4 text-center">
+            <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b shadow-xl">
+                <div class="bg-gray-50 p-4 rounded-3xl inline-block mb-6 border border-gray-100 w-3/5 aspect-square flex items-center justify-center mx-auto shadow-inner">
+                    <img src="qr.jpg" alt="QR Code TemanZayd" class="w-full h-full object-contain">
                 </div>
-                <p class="text-[9px] opacity-50 uppercase tracking-widest mb-1 font-bold italic">Bank Syariah Indonesia (BSI)</p>
-                <p class="text-2xl font-mono font-black text-black">7326328938</p>
-                <p class="text-[10px] font-black mustard-brand uppercase mt-1">a.n TEMANZAYD</p>
+                
+                <div class="space-y-1">
+                    <p class="text-[9px] opacity-50 uppercase tracking-widest font-bold italic">Bank Syariah Indonesia (BSI)</p>
+                    <p class="text-3xl font-mono font-black text-black tracking-tighter">7326328938</p>
+                    <p class="text-xs font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
+                </div>
             </div>
 
             <form id="confirmForm" class="space-y-4">
                 <div class="bg-gray-50 rounded-3xl overflow-hidden divide-y divide-gray-200 border border-gray-100 shadow-inner">
-                    <input type="text" id="nama" placeholder="Nama Donatur" required class="w-full p-4 bg-transparent outline-none text-xs text-black">
-                    <input type="number" id="nominal" placeholder="Nominal Rp" required class="w-full p-4 bg-transparent outline-none text-xs text-black">
-                    <select id="program_tujuan" required class="w-full p-4 bg-transparent outline-none text-xs text-gray-500 font-bold">
+                    <input type="text" id="nama" placeholder="Nama Donatur" required class="w-full p-5 bg-transparent outline-none text-xs text-black">
+                    <input type="number" id="nominal" placeholder="Nominal Rp" required class="w-full p-5 bg-transparent outline-none text-xs text-black">
+                    <select id="program_tujuan" required class="w-full p-5 bg-transparent outline-none text-xs text-gray-500 font-bold">
                         <option value="" disabled selected>Pilih Program Donasi</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[10px] shadow-lg shadow-yellow-600/20 active:scale-95 transition">Konfirmasi WhatsApp</button>
+                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[11px] shadow-lg shadow-yellow-600/20 active:scale-95 transition">
+                    Konfirmasi WhatsApp
+                </button>
             </form>
         </section>
     </main>
@@ -122,7 +127,6 @@
             {n: "Jumat Berkah", i: "🕌"}, {n: "Penyintas", i: "🤍"}
         ];
 
-        // Render Mitra Grid - TANPA TEXT TZCOLLABORATION
         const mGrid = document.getElementById('mitra-grid');
         mitras.forEach(m => {
             mGrid.innerHTML += `
@@ -131,7 +135,6 @@
                 </div>`;
         });
 
-        // Render Program Grid & Dropdown - DENGAN ICON
         const pGrid = document.getElementById('program-grid');
         const pSelect = document.getElementById('program_tujuan');
         progs.forEach(p => {
@@ -140,7 +143,6 @@
                     <div class="text-lg">${p.i}</div>
                     <span class="text-[9px] font-black uppercase italic text-gray-800 leading-tight">${p.n}</span>
                 </div>`;
-            
             const opt = document.createElement('option');
             opt.value = p.n;
             opt.text = `${p.i} ${p.n}`;
