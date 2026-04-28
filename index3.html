@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TemanZayd Community - Official Profile</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; }
+        .dark body { background-color: #0f172a; color: #f8fafc; }
+        .mustard-brand { color: #d99a0d; }
+        .bg-mustard { background-color: #f2b84b; color: #1a1a1a; }
+        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: 0.3s; }
+        .dark .glass-card { background: #1e293b; border: 1px solid #334155; }
+        .nav-item { color: #888; transition: 0.3s; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .nav-item.active { color: #d99a0d; border-bottom: 3px solid #f2b84b; }
+        .page { display: none; }
+        .page.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .input-style { width: 100%; padding: 1rem; background: rgba(0,0,0,0.03); border-radius: 1rem; outline: none; font-size: 14px; margin-bottom: 1rem; border: 1px solid transparent; }
+        .dark .input-style { background: rgba(255,255,255,0.05); color: white; border: 1px solid #334155; }
+        
+        /* Accordion Style */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-item.active .accordion-content { max-height: 2500px; }
+        .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-[14px]">
+
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-4 flex justify-around border-b border-gray-100 dark:border-slate-800 overflow-x-auto whitespace-nowrap">
+        <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 px-2 active">Beranda</button>
+        <button onclick="showPage('ajukan')" id="nav-ajukan" class="nav-item py-2 px-2">Ajukan</button>
+        <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2 px-2">Donasi</button>
+        <button onclick="showPage('contact')" id="nav-contact" class="nav-item py-2 px-2">Hubungi</button>
+        </nav>
+
+    <main class="flex-grow p-5 space-y-6">
+        
+        <section id="home" class="page active space-y-5 text-center">
+            <img src="logo.png" alt="Logo" class="w-24 mx-auto mb-4">
+            <h1 class="text-4xl font-black italic uppercase tracking-tighter">TEMAN<span class="mustard-brand">ZAYD</span></h1>
+        </section>
+
+        <section id="ajukan" class="page space-y-4">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center mb-6">Pusat <span class="mustard-brand">Pengajuan</span></h2>
+
+            <div class="glass-card rounded-[2rem] accordion-item active" id="acc-susu">
+                <div class="accordion-header" onclick="toggleAccordion('acc-susu')">
+                    <span class="font-black text-xs uppercase tracking-widest">#KalengSusuKebaikan</span>
+                    <span class="mustard-brand">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formSusu" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Pengajuan Kaleng Susu">
+                        <input type="text" name="Nama_Pasien" placeholder="Nama Pasien" required class="input-style">
+                        <input type="text" name="Umur" placeholder="Umur" required class="input-style">
+                        <select name="Jenis_Kelamin" required class="input-style">
+                            <option value="" disabled selected>Jenis Kelamin</option>
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                        <textarea name="Alamat" placeholder="Alamat Domisili" required class="input-style h-24"></textarea>
+                        <input type="text" name="Diagnosa" placeholder="Diagnosa Penyakit" required class="input-style">
+                        <input type="text" name="Merk_Susu" placeholder="Merk & Varian Susu" required class="input-style">
+                        <input type="text" name="Nama_Pendamping" placeholder="Nama Pendamping" required class="input-style">
+                        <input type="number" name="WA_Pendamping" placeholder="WA Pendamping" required class="input-style">
+                        <input type="url" name="Link_Lampiran" placeholder="Link GDrive (Diagnosa, Foto, SKTM)" required class="input-style">
+                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Pengajuan</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[2rem] accordion-item" id="acc-rumah">
+                <div class="accordion-header" onclick="toggleAccordion('acc-rumah')">
+                    <span class="font-black text-xs uppercase tracking-widest">Asesmen Rumah Singgah</span>
+                    <span class="mustard-brand">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formRumah" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Asesmen Rumah Singgah">
+                        <input type="text" name="Nama_Anak" placeholder="Nama Lengkap Anak" required class="input-style">
+                        <input type="text" name="Usia" placeholder="Usia Anak" required class="input-style">
+                        <select name="Gender" required class="input-style">
+                            <option value="" disabled selected>Jenis Kelamin</option>
+                            <option value="L">Laki-laki</option><option value="P">Perempuan</option>
+                        </select>
+                        <input type="text" name="Diagnosa" placeholder="Penyakit/Diagnosa" required class="input-style">
+                        <select name="Ada_Surat" required class="input-style">
+                            <option value="" disabled selected>Ada surat keterangan dokter?</option>
+                            <option value="Ada">Ada</option><option value="Tidak">Tidak</option>
+                        </select>
+                        <input type="text" name="Merk_Susu" placeholder="Merk/Jenis Susu" required class="input-style">
+                        <input type="text" name="Qty_Susu" placeholder="Kebutuhan susu per bulan" required class="input-style">
+                        <select name="Rutin_Terapi" required class="input-style">
+                            <option value="" disabled selected>Sedang rutin terapi?</option>
+                            <option value="Ya">Ya</option><option value="Tidak">Tidak</option>
+                        </select>
+                        <textarea name="Detail_Terapi" placeholder="Jelaskan terapi yang dijalani" class="input-style h-20"></textarea>
+                        <input type="text" name="Wali" placeholder="Nama Orang Tua / Wali" required class="input-style">
+                        <input type="number" name="Kontak" placeholder="Nomor HP/WA" required class="input-style">
+                        <textarea name="Alamat" placeholder="Alamat Tinggal Saat Ini" required class="input-style h-20"></textarea>
+                        <input type="number" name="Anggota_Keluarga" placeholder="Jumlah anggota keluarga 1 rumah" required class="input-style">
+                        <input type="text" name="Pekerjaan" placeholder="Pekerjaan Orang Tua (Ayah & Ibu)" required class="input-style">
+                        <select name="Merokok" required class="input-style">
+                            <option value="" disabled selected>Ada anggota keluarga merokok aktif?</option>
+                            <option value="Ya">Ya</option><option value="Tidak">Tidak</option>
+                        </select>
+                        <input type="text" name="Penghasilan" placeholder="Estimasi penghasilan per bulan" required class="input-style">
+                        <input type="text" name="Bantuan_Lain" placeholder="Apakah sedang menerima bantuan pihak lain?" required class="input-style">
+                        <input type="url" name="Link_Foto_Dokumen" placeholder="Link Foto Anak & Dokumen Pendukung" required class="input-style">
+                        <select name="Izin_Data" required class="input-style">
+                            <option value="" disabled selected>Bersedia data digunakan untuk asesmen?</option>
+                            <option value="Bersedia">Bersedia</option>
+                        </select>
+                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Asesmen</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[2rem] accordion-item" id="acc-playdate">
+                <div class="accordion-header" onclick="toggleAccordion('acc-playdate')">
+                    <span class="font-black text-xs uppercase tracking-widest">Pendaftaran PlaydateRTZ</span>
+                    <span class="mustard-brand">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formPlaydate" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Pendaftaran Playdate">
+                        <input type="text" name="Nama_Anak" placeholder="Nama Anak" required class="input-style">
+                        <input type="text" name="Usia" placeholder="Usia Anak" required class="input-style">
+                        <select name="Gender" required class="input-style">
+                            <option value="L">Laki-laki</option><option value="P">Perempuan</option>
+                        </select>
+                        <input type="text" name="Diagnosa" placeholder="Diagnosa/Kondisi Kesehatan" required class="input-style">
+                        <input type="text" name="Alat_Bantu" placeholder="Alat Bantu yang Digunakan" required class="input-style">
+                        <input type="text" name="Asal" placeholder="Asal Daerah / Kota" required class="input-style">
+                        <input type="text" name="Rumah_Singgah" placeholder="Nama Rumah Singgah (Jika ada)" class="input-style">
+                        <input type="text" name="Pendamping" placeholder="Nama Pendamping" required class="input-style">
+                        <input type="text" name="Hubungan" placeholder="Hubungan Pendamping dengan Anak" required class="input-style">
+                        <input type="number" name="WA" placeholder="Nomor WhatsApp" required class="input-style">
+                        <select name="Dokumentasi" required class="input-style">
+                            <option value="" disabled selected>Berkenan didokumentasikan di sosmed?</option>
+                            <option value="Ya">Ya</option><option value="Tidak">Tidak</option>
+                        </select>
+                        <select name="Mandiri" required class="input-style">
+                            <option value="" disabled selected>Bersedia datang mandiri ke lokasi?</option>
+                            <option value="Ya">Ya</option>
+                        </select>
+                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Daftar Playdate</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        </main>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXopbbzX7ndIVu4bIeyZJW6HHODjxjb6Y_3pic1TjWkaYOe6CDk7x9anhIAjPpAiT1UQ/exec';
+
+        // Accordion Logic
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+
+        // Handle All Forms
+        async function handleForm(event) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = "MENGIRIM..."; btn.disabled = true;
+
+            try {
+                const formData = new FormData(form);
+                const params = new URLSearchParams();
+                formData.forEach((value, key) => params.append(key, value));
+
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params
+                });
+
+                alert("Data berhasil terkirim ke sistem!");
+                form.reset();
+            } catch (error) {
+                alert("Gagal mengirim. Coba lagi.");
+            } finally {
+                btn.innerText = originalText; btn.disabled = false;
+            }
+        }
+
+        document.getElementById('formSusu').addEventListener('submit', handleForm);
+        document.getElementById('formRumah').addEventListener('submit', handleForm);
+        document.getElementById('formPlaydate').addEventListener('submit', handleForm);
+
+        function showPage(pId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pId).classList.add('active');
+            document.getElementById('nav-' + pId).classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            document.getElementById('dark-icon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+        }
+    </script>
+</body>
+</html>
