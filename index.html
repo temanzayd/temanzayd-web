@@ -3,415 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TemanZayd | Kebaikan Tanpa Batas</title>
+    <title>TemanZayd Community - Official Profile</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
-        
-        :root {
-            --mustard: #f2b84b;
-            --slate: #1e293b;
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            scroll-behavior: smooth;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .sidebar-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .page-enter {
-            animation: slideUp 0.5s ease-out forwards;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn-mustard {
-            background-color: var(--mustard);
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .btn-mustard:hover {
-            background-color: #e0a73d;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(242, 184, 75, 0.3);
-        }
-
-        .bg-mustard { background-color: var(--mustard); }
-        .text-mustard { color: var(--mustard); }
-        
-        [x-cloak] { display: none !important; }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; overflow-x: hidden; }
+        .dark body { background-color: #0f172a; color: #f8fafc; }
+        .mustard-brand { color: #d99a0d; }
+        .bg-mustard { background-color: #f2b84b; color: #1a1a1a; }
+        #sidebar { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 10px 0 30px rgba(0,0,0,0.1); }
+        #sidebar.open { left: 0; }
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; backdrop-filter: blur(4px); }
+        #overlay.active { display: block; }
+        .nav-item-side { width: 100%; text-align: left; padding: 0.9rem 1.5rem; font-weight: 700; text-transform: uppercase; font-size: 11px; border-radius: 1rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 12px; transition: 0.2s; }
+        .nav-item-side.active { background-color: #f2b84b; color: #1a1a1a; }
+        .page { display: none; padding-top: 110px; padding-bottom: 80px; } 
+        .page.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-radius: 2rem; }
+        .dark .glass-card { background: #1e293b; border: 1px solid #334155; }
+        .input-style { width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.03); border-radius: 0.8rem; outline: none; font-size: 13px; margin-bottom: 0.8rem; border: 1px solid transparent; }
+        .dark .input-style { background: rgba(255,255,255,0.05); color: white; border: 1px solid #334155; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .accordion-item.active .accordion-content { max-height: 5000px; }
+        .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; }
+        #qr-modal { display: none; position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; padding: 20px; }
     </style>
 </head>
-<body x-data="appState()">
+<body class="flex flex-col min-h-screen">
 
-    <div x-show="toast" 
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 transform translate-y-2"
-         x-transition:enter-end="opacity-100 transform translate-y-0"
-         class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-3 bg-slate-800 text-white rounded-full shadow-2xl text-sm font-medium"
-         x-text="toastMsg" x-cloak>
+    <div id="qr-modal" onclick="closeQR()">
+        <div class="relative max-w-sm w-full bg-white p-4 rounded-[2rem]" onclick="event.stopPropagation()">
+            <img src="qr.jpg" alt="QR" class="w-full h-auto rounded-2xl">
+            <button onclick="closeQR()" class="absolute -top-4 -right-4 w-10 h-10 bg-mustard text-white rounded-full font-black">✕</button>
+        </div>
     </div>
 
-    <header class="fixed top-0 w-full z-50 glass shadow-sm px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <button @click="sidebarOpen = true" class="text-slate-800 text-2xl focus:outline-none">
-                <i class="fa-solid fa-bars-staggered"></i>
-            </button>
-            <h1 class="font-bold text-xl tracking-tight text-slate-800">Teman<span class="text-mustard">Zayd</span></h1>
+    <div id="overlay" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="bg-white dark:bg-slate-900 p-6 flex flex-col shadow-2xl">
+        <div class="mb-8 flex flex-col items-center">
+            <img src="logo.png" alt="Logo" class="w-16 mb-2">
+            <h2 class="text-xl font-black italic dark:text-white uppercase tracking-tighter">TEMAN<span class="mustard-brand">ZAYD</span></h2>
         </div>
-        <button @click="currentPage = 'donasi'" class="bg-mustard text-white px-5 py-2 rounded-full text-sm font-semibold">
-            Donasi
+        <nav class="flex-grow overflow-y-auto">
+            <button onclick="navTo('home')" id="nav-home" class="nav-item-side active dark:text-white"><span>🏠</span> Beranda</button>
+            <button onclick="navTo('rtz')" id="nav-rtz" class="nav-item-side dark:text-white"><span>🏡</span> Rumah TemanZayd</button>
+            <button onclick="navTo('about')" id="nav-about" class="nav-item-side dark:text-white"><span>🤝</span> Mitra</button>
+            <button onclick="navTo('program')" id="nav-program" class="nav-item-side dark:text-white"><span>💎</span> Program</button>
+            <button onclick="navTo('ajukan')" id="nav-ajukan" class="nav-item-side dark:text-white"><span>📝</span> Ajukan</button>
+            <button onclick="navTo('media')" id="nav-media" class="nav-item-side dark:text-white"><span>📸</span> Media</button>
+            <button onclick="navTo('team')" id="nav-team" class="nav-item-side dark:text-white"><span>👥</span> Kami</button>
+            <button onclick="navTo('donation')" id="nav-donation" class="nav-item-side dark:text-white"><span>💰</span> Donasi</button>
+            <button onclick="navTo('contact')" id="nav-contact" class="nav-item-side dark:text-white"><span>📞</span> Hubungi</button>
+        </nav>
+    </aside>
+
+    <header class="fixed top-0 w-full z-[900] bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 p-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebar()" class="text-2xl p-2 focus:outline-none dark:text-white">☰</button>
+            <h1 class="text-lg font-black italic uppercase tracking-tighter dark:text-white">TEMAN<span class="mustard-brand">ZAYD</span></h1>
+        </div>
+        <button onclick="toggleDarkMode()" class="w-10 h-10 bg-mustard rounded-full flex items-center justify-center text-xl shadow-lg">
+            <span id="dark-icon">🌙</span>
         </button>
     </header>
 
-    <div x-show="sidebarOpen" class="fixed inset-0 z-[60]" x-cloak>
-        <div @click="sidebarOpen = false" class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
-        <aside class="absolute left-0 top-0 h-full w-72 bg-white shadow-2xl sidebar-transition p-6 flex flex-col"
-               :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-            <div class="flex justify-between items-center mb-10">
-                <span class="font-bold text-xl">Menu</span>
-                <button @click="sidebarOpen = false" class="text-slate-400"><i class="fa-solid fa-xmark text-2xl"></i></button>
+    <main class="p-5 flex-grow">
+        <section id="home" class="page active space-y-5">
+            <div class="text-center py-4">
+                <img src="logo.png" alt="Logo" class="w-24 mx-auto mb-4">
+                <p class="text-[10px] tracking-[0.3em] uppercase opacity-40 font-bold italic dark:text-white">Berbagi Bersama Untuk Sesama</p>
             </div>
-            <nav class="flex flex-col gap-2">
-                <template x-for="item in menuItems">
-                    <button @click="navigate(item.id)" 
-                            :class="currentPage === item.id ? 'bg-mustard/10 text-mustard font-bold' : 'text-slate-600'"
-                            class="w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3">
-                        <i :class="item.icon"></i>
-                        <span x-text="item.label"></span>
-                    </button>
-                </template>
-            </nav>
-            <div class="mt-auto pt-6 border-t border-slate-100">
-                <p class="text-xs text-slate-400 text-center">© 2024 TemanZayd Community</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="glass-card p-5 border-b-4 border-f2b84b text-center"><div class="text-3xl font-black mustard-brand">> 5.000+</div><div class="text-[10px] uppercase font-black dark:text-white">Penerima Manfaat</div></div>
+                <div class="glass-card p-5 border-b-4 border-f2b84b text-center"><div class="text-3xl font-black mustard-brand">30+</div><div class="text-[10px] uppercase font-black dark:text-white">Relawan Aktif</div></div>
             </div>
-        </aside>
-    </div>
-
-    <main class="pt-[110px] pb-20 px-6 max-w-2xl mx-auto">
-        
-        <section x-show="currentPage === 'home'" class="page-enter">
-            <div class="mb-8">
-                <div class="w-20 h-1 bg-mustard mb-4 rounded-full"></div>
-                <h2 class="text-3xl font-bold text-slate-800 leading-tight">Perjalanan Kasih<br>TemanZayd</h2>
+            <div class="glass-card p-6">
+                <h3 class="text-[11px] font-black uppercase mustard-brand mb-3">Kisah Pendirian (2021)</h3>
+                <p class="text-[13px] leading-relaxed italic opacity-80 dark:text-white">Lahir dari pengalaman pribadi <span class="font-bold">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk menemani pejuang sehat lainnya.</p>
             </div>
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-6">
-                <p class="text-slate-600 leading-relaxed italic mb-4">
-                    "Terinspirasi dari perjuangan putra kami, Zayd, seorang Cancer Warrior..."
-                </p>
-                <p class="text-slate-600 leading-relaxed mb-4">
-                    Founder <strong>Ashma Mardhiyatu Musyaffa</strong> & <strong>Robby Rachmandias</strong> membangun komunitas ini untuk merangkul mereka yang sedang berjuang di jalan yang sama.
-                </p>
-            </div>
-            
-            <h3 class="font-bold text-lg mb-4 text-slate-800">Misi Kami</h3>
-            <div class="grid gap-4">
-                <div class="p-4 bg-white rounded-2xl border-l-4 border-mustard shadow-sm">
-                    <p class="text-sm text-slate-600">Dukungan nyata bagi pejuang kesehatan, yatim, dan dhuafa.</p>
-                </div>
-                <div class="p-4 bg-white rounded-2xl border-l-4 border-mustard shadow-sm">
-                    <p class="text-sm text-slate-600">Program pemberdayaan berkelanjutan dengan transparansi penuh.</p>
-                </div>
-                <div class="p-4 bg-white rounded-2xl border-l-4 border-mustard shadow-sm">
-                    <p class="text-sm text-slate-600">Dakwah dan gotong royong sebagai nafas pergerakan.</p>
-                </div>
+            <div class="space-y-3">
+                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] px-2 opacity-40 dark:text-white text-center">Tujuan & Misi</h3>
+                <div class="glass-card p-4 flex items-center gap-4 dark:text-white"><span>🤝</span><p class="text-xs font-medium">Dukungan langsung pejuang sehat, nafkah, yatim, dhuafa, dan korban bencana.</p></div>
+                <div class="glass-card p-4 flex items-center gap-4 dark:text-white"><span>💎</span><p class="text-xs font-medium">Program pemberdayaan berkelanjutan dengan transparansi dan amanah.</p></div>
+                <div class="glass-card p-4 flex items-center gap-4 dark:text-white"><span>✨</span><p class="text-xs font-medium">Menyebarkan nilai kebaikan melalui dakwah dan gotong royong.</p></div>
             </div>
         </section>
 
-        <section x-show="currentPage === 'rumah'" class="page-enter" x-cloak>
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-800 mb-2">Rumah TemanZayd</h2>
-                <p class="text-slate-500 text-sm">Tempat Berteduh Para Pejuang Sehat</p>
+        <section id="rtz" class="page space-y-6">
+            <div class="text-center">
+                <h2 class="text-2xl font-black italic uppercase dark:text-white">Rumah <span class="mustard-brand">TemanZayd</span></h2>
+                <p class="text-[10px] uppercase opacity-50 tracking-widest mt-1 dark:text-white font-bold">Rumah Singgah Gratis Pasien Kanker & Penyakit Kronis</p>
             </div>
-            
-            <div class="rounded-3xl overflow-hidden mb-6 shadow-lg h-48 bg-slate-200">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.176466989441!2d106.829037!3d-6.371217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjInMTYuNCJTIDEwNsKwNDknNDQuNSJF!5e0!3m2!1sen!2sid!4v1650000000000" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-
-            <div class="space-y-4 mb-8">
-                <div class="bg-blue-50 p-4 rounded-2xl flex gap-4">
-                    <i class="fa-solid fa-location-dot text-blue-500 mt-1"></i>
-                    <p class="text-sm text-blue-800">JI. Garuda Raya No.1, RT.02/RW.01, Beji Timur, Kec. Beji, Depok.</p>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100">
-                        <i class="fa-solid fa-bed text-mustard mb-2"></i>
-                        <p class="text-xs font-bold">Fasilitas Tidur</p>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100">
-                        <i class="fa-solid fa-utensils text-mustard mb-2"></i>
-                        <p class="text-xs font-bold">Dapur Bersama</p>
-                    </div>
-                </div>
-                <div class="bg-slate-800 text-white p-6 rounded-3xl">
-                    <h4 class="font-bold mb-2">Kriteria Penghuni:</h4>
-                    <ul class="text-sm space-y-2 opacity-90">
-                        <li>• Pasien Kanker/Kronis aktif pengobatan.</li>
-                        <li>• Rujukan RSUI, RSCM & Sekitarnya.</li>
-                        <li>• Fasilitas BPJS Kelas 3.</li>
+            <div class="glass-card p-6 border-l-8 border-f2b84b space-y-4">
+                <p class="text-xs leading-relaxed opacity-80 dark:text-white">Fasilitas tinggal sementara **GRATIS** bagi pasien pejuang kanker & kronis yang menjalani pengobatan di **RSUI, RSCM, dan RS sekitarnya**.</p>
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-700">
+                    <h4 class="font-black text-[10px] uppercase mustard-brand mb-2">Fasilitas & Kriteria:</h4>
+                    <ul class="text-[11px] space-y-1 opacity-70 dark:text-white list-disc ml-4 font-bold">
+                        <li>Tempat tidur bersih & Area bermain anak</li>
+                        <li>Dapur bersama & Peralatan masak lengkap</li>
+                        <li>Khusus Keluarga Pra-Sejahtera (BPJS Kelas 3)</li>
+                        <li>Pasien rawat jalan RS wilayah Depok/Jakarta</li>
                     </ul>
                 </div>
             </div>
-            <button @click="goToAsesmen()" class="w-full btn-mustard py-4 rounded-2xl font-bold">Daftar / Ajukan Sekarang</button>
-        </section>
-
-        <section x-show="currentPage === 'mitra'" class="page-enter" x-cloak>
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Mitra Kebaikan</h2>
-            <div class="grid grid-cols-2 gap-3">
-                <template x-for="m in mitraList">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100 text-center text-xs font-medium text-slate-600 shadow-sm" x-text="m"></div>
-                </template>
+            <div class="glass-card p-5 bg-mustard/10 border border-mustard/20 text-center space-y-3">
+                <p class="text-[11px] font-bold uppercase dark:text-white">📍 Lokasi Kami</p>
+                <p class="text-xs dark:text-white font-bold">JI. Garuda Raya No.1, RT.02/RW.01, Beji Timur, Beji, Kota Depok, Jawa Barat</p>
+                <div class="rounded-2xl overflow-hidden border-2 border-mustard/30 h-48 w-full shadow-inner">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.2346944683515!2d106.8285!3d-6.3636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjEnNDkuMCJTIDEwNiw0OSc0Mi42IkU!5e0!3m2!1sid!2sid!4v1714310000000!5m2!1sid!2sid" class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+                </div>
             </div>
+            <button onclick="navToAjukanAsesmen()" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px] shadow-lg active:scale-95 transition">Daftar / Ajukan Asesmen</button>
         </section>
 
-        <section x-show="currentPage === 'program'" class="page-enter" x-cloak>
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Program Kami</h2>
-            <div class="space-y-3">
-                <template x-for="p in programList">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-100 flex items-center gap-4 shadow-sm">
-                        <div class="w-10 h-10 rounded-full bg-mustard/10 flex items-center justify-center text-mustard">
-                            <i class="fa-solid fa-heart-pulse"></i>
-                        </div>
-                        <span class="text-sm font-semibold text-slate-700" x-text="p"></span>
-                    </div>
-                </template>
-            </div>
-        </section>
-
-        <section x-show="currentPage === 'ajukan'" class="page-enter" x-cloak>
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Pengajuan Bantuan</h2>
+        <section id="ajukan" class="page space-y-4">
+            <h2 class="text-2xl font-black italic uppercase text-center mb-6 dark:text-white">Pusat <span class="mustard-brand">Pengajuan</span></h2>
             
+            <div class="glass-card accordion-item active" id="acc-susu">
+                <div class="accordion-header" onclick="toggleAccordion('acc-susu')">
+                    <span class="font-black text-xs uppercase dark:text-white">#KalengSusuKebaikan</span>
+                    <span class="mustard-brand font-bold text-xl">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formSusu" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Pengajuan Kaleng Susu">
+                        <input type="text" name="Nama_Pasien" placeholder="Nama Pasien" required class="input-style">
+                        <input type="text" name="Umur" placeholder="Umur (Bulan/Tahun)" required class="input-style">
+                        <select name="Gender" required class="input-style"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+                        <textarea name="Alamat" placeholder="Alamat Domisili" required class="input-style h-20"></textarea>
+                        <input type="text" name="Diagnosa" placeholder="Diagnosa Penyakit" required class="input-style">
+                        <input type="text" name="Merk_Susu" placeholder="Merk & Jenis Susu" required class="input-style">
+                        <input type="text" name="Pendamping" placeholder="Nama Pendamping" required class="input-style">
+                        <input type="number" name="WA" placeholder="WA Pendamping" required class="input-style">
+                        <input type="url" name="Link" placeholder="Link GDrive Dokumen" required class="input-style">
+                        <button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Kirim Pengajuan</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glass-card accordion-item" id="acc-rumah">
+                <div class="accordion-header" onclick="toggleAccordion('acc-rumah')">
+                    <span class="font-black text-xs uppercase dark:text-white text-left">Asesmen Rumah Singgah</span>
+                    <span class="mustard-brand font-bold text-xl">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formRumah" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Asesmen Rumah Singgah">
+                        <input type="text" name="Nama_Anak" placeholder="Nama Lengkap Anak" required class="input-style">
+                        <input type="text" name="Usia" placeholder="Usia Anak" required class="input-style">
+                        <select name="Gender" required class="input-style"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+                        <input type="text" name="Diagnosa" placeholder="Penyakit / Diagnosa" required class="input-style">
+                        <select name="Surat_Dokter" required class="input-style"><option value="Ya">Ada Surat Keterangan Dokter</option><option value="Tidak">Tidak Ada</option></select>
+                        <input type="text" name="Merk_Susu" placeholder="Merk & Jenis Susu" required class="input-style">
+                        <input type="text" name="Qty_Susu" placeholder="Kebutuhan Susu/Bulan" required class="input-style">
+                        <select name="Terapi" required class="input-style"><option value="Ya">Sedang Rutin Terapi</option><option value="Tidak">Tidak</option></select>
+                        <textarea name="Detail_Terapi" placeholder="Jelaskan Terapi" class="input-style h-20"></textarea>
+                        <input type="text" name="Wali" placeholder="Nama Orang Tua/Wali" required class="input-style">
+                        <input type="number" name="Kontak" placeholder="Nomor HP/WA" required class="input-style">
+                        <textarea name="Alamat_Skg" placeholder="Alamat Lengkap Saat Ini" required class="input-style h-20"></textarea>
+                        <input type="number" name="Anggota" placeholder="Jumlah Anggota Keluarga" required class="input-style">
+                        <input type="text" name="Pekerjaan" placeholder="Pekerjaan Ayah & Ibu" required class="input-style">
+                        <select name="Merokok" required class="input-style"><option value="Ya">Ada Keluarga Merokok</option><option value="Tidak">Tidak Ada</option></select>
+                        <input type="text" name="Penghasilan" placeholder="Estimasi Penghasilan/Bulan" required class="input-style">
+                        <input type="text" name="Bantuan" placeholder="Menerima Bantuan Lain?" required class="input-style">
+                        <input type="url" name="Link_Foto" placeholder="Link Foto Terkini" required class="input-style">
+                        <input type="url" name="Link_Dokumen" placeholder="Link Dokumen Pendukung" required class="input-style">
+                        <select name="Izin" required class="input-style"><option value="Bersedia">Bersedia data digunakan asesmen</option></select>
+                        <button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Kirim Asesmen</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="glass-card accordion-item" id="acc-play">
+                <div class="accordion-header" onclick="toggleAccordion('acc-play')">
+                    <span class="font-black text-xs uppercase dark:text-white">Pendaftaran PlaydateRTZ</span>
+                    <span class="mustard-brand font-bold text-xl">▼</span>
+                </div>
+                <div class="accordion-content px-6 pb-6">
+                    <form id="formPlay" class="space-y-1">
+                        <input type="hidden" name="Tipe_Form" value="Pendaftaran Playdate">
+                        <input type="text" name="Nama_Anak" placeholder="Nama Anak" required class="input-style">
+                        <input type="text" name="Usia" placeholder="Usia" required class="input-style">
+                        <select name="Gender" required class="input-style"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+                        <input type="text" name="Diagnosa" placeholder="Diagnosa/Kondisi" required class="input-style">
+                        <input type="text" name="Alat_Bantu" placeholder="Alat Bantu Digunakan" required class="input-style">
+                        <input type="text" name="Asal" placeholder="Asal Daerah/Kota" required class="input-style">
+                        <input type="text" name="Rumah_Singgah" placeholder="Rumah Singgah (Jika Ada)" class="input-style">
+                        <input type="text" name="Pendamping" placeholder="Nama Pendamping" required class="input-style">
+                        <input type="text" name="Hubungan" placeholder="Hubungan Pendamping" required class="input-style">
+                        <input type="number" name="WA" placeholder="WhatsApp" required class="input-style">
+                        <select name="Sosmed" required class="input-style"><option value="Ya">Berkenan Dokumentasi Sosmed</option><option value="Tidak">Tidak</option></select>
+                        <select name="Mandiri" required class="input-style"><option value="Ya">Bersedia Datang Mandiri</option></select>
+                        <button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Daftar Playdate</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="media" class="page space-y-6 text-center">
+            <h2 class="text-2xl font-black italic uppercase dark:text-white">Media <span class="mustard-brand">& Aktivitas</span></h2>
+            <div class="space-y-6">
+                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px]" frameborder="0"></iframe></div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px]" frameborder="0"></iframe></div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DSXQ8sWD7XV/embed" class="w-full h-[500px]" frameborder="0"></iframe></div>
+            </div>
+            <a href="https://www.instagram.com/temanzayd" target="_blank" class="inline-block w-full py-5 bg-mustard font-black uppercase rounded-3xl text-[12px]">Buka Instagram @temanzayd</a>
+        </section>
+
+        <section id="donation" class="page space-y-6 text-center">
+            <div class="glass-card p-8 border-t-4 border-f2b84b">
+                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square cursor-pointer group">
+                    <img src="qr.jpg" alt="QR" class="w-full h-full object-contain"><p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100">Tap to Zoom</p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-[10px] opacity-50 uppercase font-bold italic dark:text-white">BSI - Klik Untuk Salin</p>
+                    <button onclick="copyRekening()" class="relative"><p id="rekening" class="text-4xl font-mono font-black text-black dark:text-white">7326328938</p><div id="copy-toast" class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] py-1 px-3 rounded-full opacity-0">Tersalin!</div></button>
+                    <p class="text-sm font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
+                </div>
+            </div>
+            <form id="formDonasi" class="glass-card p-6 text-left space-y-1"><input type="hidden" name="Tipe_Form" value="Konfirmasi Donasi"><input type="text" name="Nama_Donatur" placeholder="Nama" required class="input-style"><input type="number" name="Nominal" placeholder="Nominal Rp" required class="input-style"><select id="program_tujuan_select" name="Program" required class="input-style font-bold opacity-60"></select><button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Konfirmasi</button></form>
+        </section>
+
+        <section id="contact" class="page space-y-6 text-center">
+            <h2 class="text-2xl font-black italic uppercase dark:text-white">Hubungi <span class="mustard-brand">Kami</span></h2>
             <div class="space-y-4">
-                <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white">
-                    <button @click="openAccordion = openAccordion === 1 ? 0 : 1" class="w-full p-5 flex justify-between items-center font-bold text-slate-700">
-                        #KalengSusuKebaikan
-                        <i class="fa-solid fa-chevron-down transition-transform" :class="openAccordion === 1 ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="openAccordion === 1" class="p-5 pt-0 border-t border-slate-50">
-                        <form @submit.prevent="submitForm($event)" class="space-y-4">
-                            <input type="hidden" name="form_type" value="KalengSusu">
-                            <input type="text" name="nama" placeholder="Nama Pasien" class="w-full p-3 rounded-xl border border-slate-200 text-sm focus:ring-2 ring-mustard outline-none" required>
-                            <input type="number" name="usia" placeholder="Usia" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="diagnosis" placeholder="Diagnosis Penyakit" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="susu" placeholder="Merk & Varian Susu" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="wa" placeholder="Nomor WhatsApp (62xxx)" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <button type="submit" class="w-full btn-mustard py-3 rounded-xl text-sm font-bold" :disabled="loading">
-                                <span x-show="!loading">Kirim Pengajuan</span>
-                                <span x-show="loading">Memproses...</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <div id="asesmen-section" class="border border-slate-200 rounded-2xl overflow-hidden bg-white">
-                    <button @click="openAccordion = openAccordion === 2 ? 0 : 2" class="w-full p-5 flex justify-between items-center font-bold text-slate-700">
-                        Asesmen Rumah Singgah
-                        <i class="fa-solid fa-chevron-down transition-transform" :class="openAccordion === 2 ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="openAccordion === 2" class="p-5 pt-0 border-t border-slate-50">
-                        <form @submit.prevent="submitForm($event)" class="space-y-4">
-                            <input type="hidden" name="form_type" value="RumahSinggah">
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" name="nama_anak" placeholder="Nama Anak" class="p-3 rounded-xl border border-slate-200 text-sm" required>
-                                <input type="number" name="usia" placeholder="Usia" class="p-3 rounded-xl border border-slate-200 text-sm" required>
-                            </div>
-                            <select name="gender" class="w-full p-3 rounded-xl border border-slate-200 text-sm">
-                                <option value="Laki-laki">Laki-laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                            <input type="text" name="diagnosis" placeholder="Diagnosis" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <select name="surat_dokter" class="w-full p-3 rounded-xl border border-slate-200 text-sm">
-                                <option value="">Ada Surat Keterangan Dokter?</option>
-                                <option value="Ya">Ya</option>
-                                <option value="Tidak">Tidak</option>
-                            </select>
-                            <input type="text" name="pekerjaan_ortu" placeholder="Pekerjaan Orang Tua" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="wa" placeholder="WhatsApp (62xxx)" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <textarea name="alamat" placeholder="Alamat Domisili" class="w-full p-3 rounded-xl border border-slate-200 text-sm h-24" required></textarea>
-                            <div class="p-3 bg-slate-50 rounded-xl">
-                                <label class="text-xs font-bold text-slate-500 block mb-2">Persetujuan Asesmen</label>
-                                <label class="flex items-center gap-2 text-xs">
-                                    <input type="checkbox" required> Saya bersedia mengikuti prosedur asesmen
-                                </label>
-                            </div>
-                            <button type="submit" class="w-full btn-mustard py-3 rounded-xl text-sm font-bold" :disabled="loading">Kirim Data Asesmen</button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white">
-                    <button @click="openAccordion = openAccordion === 3 ? 0 : 3" class="w-full p-5 flex justify-between items-center font-bold text-slate-700">
-                        Playdate RTZ
-                        <i class="fa-solid fa-chevron-down transition-transform" :class="openAccordion === 3 ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="openAccordion === 3" class="p-5 pt-0 border-t border-slate-50">
-                        <form @submit.prevent="submitForm($event)" class="space-y-4">
-                            <input type="hidden" name="form_type" value="Playdate">
-                            <input type="text" name="nama" placeholder="Nama Peserta" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="kondisi" placeholder="Kondisi / Kebutuhan Khusus" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <input type="text" name="wa" placeholder="WhatsApp" class="w-full p-3 rounded-xl border border-slate-200 text-sm" required>
-                            <button type="submit" class="w-full btn-mustard py-3 rounded-xl text-sm font-bold" :disabled="loading">Daftar Playdate</button>
-                        </form>
-                    </div>
-                </div>
+                <a href="https://wa.me/6282261814595" target="_blank" class="glass-card p-5 flex items-center gap-4 dark:text-white"><span>💬</span><div class="text-left font-bold"><p class="text-[10px] uppercase opacity-40">WhatsApp Admin</p><p class="text-sm">Salma (Admin TemanZayd)</p></div></a>
+                <a href="https://www.instagram.com/temanzayd" target="_blank" class="glass-card p-5 flex items-center gap-4 dark:text-white"><span>📸</span><div class="text-left font-bold"><p class="text-[10px] uppercase opacity-40">Instagram</p><p class="text-sm">@temanzayd</p></div></a>
             </div>
+            <form id="formHubungi" class="glass-card p-6 space-y-1 text-left"><input type="hidden" name="Tipe_Form" value="Pertanyaan Umum"><input type="text" name="Nama" placeholder="Nama" required class="input-style"><input type="text" name="Kontak" placeholder="WA / Email" required class="input-style"><textarea name="Pesan" placeholder="Pesan" required class="input-style h-32"></textarea><button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Kirim Pesan</button></form>
         </section>
 
-        <section x-show="currentPage === 'donasi'" class="page-enter" x-cloak>
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Salurkan Kebaikan</h2>
-            
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mb-6 text-center">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Rekening Resmi (BSI)</p>
-                <div @click="copyRekening()" class="inline-flex items-center gap-3 bg-slate-50 px-6 py-4 rounded-2xl cursor-pointer group hover:bg-slate-100 transition-all">
-                    <span class="text-xl font-bold text-slate-800">7326 3289 38</span>
-                    <i class="fa-regular fa-copy text-mustard group-active:scale-90"></i>
-                </div>
-                <p class="mt-2 text-sm text-slate-500 font-medium">a.n TEMANZAYD</p>
-            </div>
-
-            <div class="mb-8">
-                <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Scan QRIS</p>
-                <div class="relative group mx-auto w-48 h-48 bg-white p-2 rounded-2xl shadow-md cursor-zoom-in" @click="zoomQR = true">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=TEMANZAYD_DUMMY_QRIS" alt="QRIS" class="w-full h-full object-contain">
-                    <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/10 flex items-center justify-center transition-all">
-                        <i class="fa-solid fa-magnifying-glass-plus text-white opacity-0 group-hover:opacity-100"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-3xl border border-slate-100">
-                <h4 class="font-bold text-slate-800 mb-4">Konfirmasi Donasi</h4>
-                <div class="space-y-4">
-                    <select x-model="donasiProgram" class="w-full p-3 rounded-xl border border-slate-200 text-sm">
-                        <option value="">Pilih Program</option>
-                        <template x-for="p in programList">
-                            <option :value="p" x-text="p"></option>
-                        </template>
-                    </select>
-                    <button @click="confirmWA()" class="w-full bg-emerald-500 text-white py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-whatsapp"></i> Konfirmasi ke Salma
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section x-show="currentPage === 'media'" class="page-enter" x-cloak>
-            <h2 class="text-2xl font-bold text-slate-800 mb-6">Galeri Kebaikan</h2>
-            <div class="grid gap-6">
-                <div class="aspect-square bg-slate-200 rounded-2xl flex items-center justify-center text-slate-400">
-                    <i class="fa-brands fa-instagram text-4xl"></i>
-                </div>
-                <div class="aspect-square bg-slate-200 rounded-2xl flex items-center justify-center text-slate-400">
-                    <i class="fa-brands fa-instagram text-4xl"></i>
-                </div>
-                <div class="aspect-square bg-slate-200 rounded-2xl flex items-center justify-center text-slate-400">
-                    <i class="fa-brands fa-instagram text-4xl"></i>
-                </div>
-                <a href="https://instagram.com/temanzayd" target="_blank" class="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-center font-bold">
-                    Ikuti @temanzayd
-                </a>
-            </div>
-        </section>
-
+        <section id="about" class="page"><div id="mitra-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="program" class="page"><div id="program-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="team" class="page space-y-8"><div class="photo-frame mx-auto max-w-sm"><img src="face1.jpg" class="w-full h-auto"></div><div class="photo-frame mx-auto max-w-sm"><img src="face2.jpg" class="w-full h-auto"></div></section>
     </main>
 
-    <div x-show="zoomQR" class="fixed inset-0 z-[100] flex items-center justify-center p-6" x-cloak>
-        <div @click="zoomQR = false" class="absolute inset-0 bg-slate-900/90 backdrop-blur-md"></div>
-        <div class="relative max-w-sm w-full bg-white p-4 rounded-3xl shadow-2xl">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=TEMANZAYD_DUMMY_QRIS" class="w-full h-auto rounded-xl">
-            <button @click="zoomQR = false" class="mt-4 w-full py-3 bg-slate-100 rounded-xl font-bold text-slate-600">Tutup</button>
-        </div>
-    </div>
+    <footer class="py-10 text-center opacity-30 text-[9px] font-bold tracking-[0.5em] uppercase italic text-black dark:text-white">Jabodetabek • Riau • Lampung</footer>
 
     <script>
-        function appState() {
-            return {
-                currentPage: 'home',
-                sidebarOpen: false,
-                openAccordion: 0,
-                zoomQR: false,
-                toast: false,
-                toastMsg: '',
-                loading: false,
-                donasiProgram: '',
-                menuItems: [
-                    { id: 'home', label: 'Beranda', icon: 'fa-solid fa-house' },
-                    { id: 'rumah', label: 'Rumah TemanZayd', icon: 'fa-solid fa-building-user' },
-                    { id: 'mitra', label: 'Mitra', icon: 'fa-solid fa-handshake' },
-                    { id: 'program', label: 'Program', icon: 'fa-solid fa-star' },
-                    { id: 'ajukan', label: 'Ajukan', icon: 'fa-solid fa-file-signature' },
-                    { id: 'media', label: 'Media', icon: 'fa-solid fa-clapperboard' },
-                    { id: 'donasi', label: 'Donasi', icon: 'fa-solid fa-heart' }
-                ],
-                mitraList: ['Adara Relief', 'KNRP', 'Warung Makan Relawan', 'YCMI', 'Gemma Insani', 'RS Bunda Peduli', 'ASF Berbagi', 'Sahabat Peduli', 'RSCM', 'DKM AsySyifa', 'FORDAI', 'Ade & Friends', 'Kak Susi', 'Bagi Indonesia', 'Elitery Indo', 'Perindu Syurga', 'Belajar Ceria', 'MRI Jakbar', 'MRI Cimahi', 'The Glow Room', 'Hanania Travel', 'IAP', 'Purple Moment', 'Career Class', 'Life For Ummah'],
-                programList: ['#KalengSusuKebaikan', '#TemanZaydBersamaPalestina', '#BulirBerasKebaikan', '#KotakMakanKebaikan', '#BorongBareng', '#BelanjaBareng', '#FightersDayOut', '#MeetTheFighters', '#KolaborAksiKebaikan', '#KadoUntukSantri', '#BantuBarengPejuangSehat', '#BantuBarengPejuangNafkah', '#JumatBerkahBerbagi', '#TemanZaydBersamaPenyintas', '#SedekahUmum'],
-
-                navigate(page) {
-                    this.currentPage = page;
-                    this.sidebarOpen = false;
-                    window.scrollTo(0, 0);
-                },
-
-                goToAsesmen() {
-                    this.currentPage = 'ajukan';
-                    this.openAccordion = 2;
-                    setTimeout(() => {
-                        document.getElementById('asesmen-section').scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                },
-
-                copyRekening() {
-                    navigator.clipboard.writeText('7326328938');
-                    this.showToast('Nomor Rekening Tersalin!');
-                },
-
-                showToast(msg) {
-                    this.toastMsg = msg;
-                    this.toast = true;
-                    setTimeout(() => this.toast = false, 2500);
-                },
-
-                confirmWA() {
-                    if(!this.donasiProgram) return this.showToast('Pilih program dulu ya');
-                    const text = encodeURIComponent(`Halo Admin Salma, saya ingin konfirmasi donasi untuk program ${this.donasiProgram}`);
-                    window.open(`https://wa.me/6282261814595?text=${text}`, '_blank');
-                },
-
-                async submitForm(e) {
-                    this.loading = true;
-                    const formData = new FormData(e.target);
-                    const scriptURL = 'https://script.google.com/macros/s/AKfycbzXopbbzX7ndIVu4bIeyZJW6HHODjxjb6Y_3pic1TjWkaYOe6CDk7x9anhIAjPpAiT1UQ/exec';
-
-                    try {
-                        await fetch(scriptURL, { method: 'POST', body: formData });
-                        this.showToast('Berhasil terkirim!');
-                        e.target.reset();
-                        this.openAccordion = 0;
-                    } catch (error) {
-                        this.showToast('Gagal mengirim, coba lagi.');
-                    } finally {
-                        this.loading = false;
-                    }
-                }
-            }
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXopbbzX7ndIVu4bIeyZJW6HHODjxjb6Y_3pic1TjWkaYOe6CDk7x9anhIAjPpAiT1UQ/exec';
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
+        function navTo(pId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item-side').forEach(n => n.classList.remove('active'));
+            document.getElementById(pId).classList.add('active');
+            document.getElementById('nav-' + pId).classList.add('active');
+            if(document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
+        function navToAjukanAsesmen() { 
+            navTo('ajukan'); 
+            setTimeout(() => toggleAccordion('acc-rumah'), 500);
+        }
+        function toggleAccordion(id) { const item = document.getElementById(id); const isActive = item.classList.contains('active'); document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active')); if (!isActive) item.classList.add('active'); }
+        function openQR() { document.getElementById('qr-modal').style.display = 'flex'; }
+        function closeQR() { document.getElementById('qr-modal').style.display = 'none'; }
+        function copyRekening() { navigator.clipboard.writeText('7326328938'); const t = document.getElementById('copy-toast'); t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000); }
+        function toggleDarkMode() { document.documentElement.classList.toggle('dark'); document.getElementById('dark-icon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙'; }
+        async function handleForm(event, callback) {
+            event.preventDefault(); const form = event.target; const btn = form.querySelector('button[type="submit"]'); btn.innerText = "KIRIM..."; btn.disabled = true;
+            try {
+                const formData = new FormData(form); const params = new URLSearchParams(); formData.forEach((v, k) => params.append(k, v));
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params });
+                if (callback) callback(formData); form.reset(); alert("OK! Terkirim.");
+            } catch (e) { alert("Gagal."); } finally { btn.innerText = "KIRIM"; btn.disabled = false; }
+        }
+        document.getElementById('formDonasi').addEventListener('submit', (e) => handleForm(e, (d) => { window.location.href = `https://wa.me/6282261814595?text=Konfirmasi Donasi:%0ANama: ${d.get('Nama_Donatur')}%0ANominal: Rp${d.get('Nominal')}%0AProgram: ${d.get('Program')}`; }));
+        ['formSusu', 'formRumah', 'formPlay', 'formHubungi'].forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener('submit', (e) => handleForm(e)); });
+        const mitras = ["Adara Relief International", "KNRP", "Warung Makan Relawan", "Yayasan Cahaya Madani Indonesia", "Gemma Insani Foundation", "Rumah Singgah Bunda Peduli", "Rumah Singgah ASF Berbagi", "Shelter Sahabat Peduli", "RSCM Jakarta", "DKM Masjid AsySyifa RSCM", "Pondok Tahfidz Quran FORDAI", "Ade and Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo", "Perindu Syurga", "Rumah Belajar Ceria", "MRI Jakarta Barat", "MRI Cimahi", "The Glow Room", "Hanania Travel", "IAP", "Purple Moment Fighter", "Career Class Id", "Life For Ummah Indonesia"];
+        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}, {n: "#SedekahUmum", i: "✨"}];
+        mitras.forEach(m => { document.getElementById('mitra-grid').innerHTML += `<div class="glass-card p-4 h-20 flex items-center justify-center text-center dark:text-white font-bold"><span class="text-[10px] uppercase leading-tight">🤝 ${m}</span></div>`; });
+        const pGrid = document.getElementById('program-grid'); const pSelect = document.getElementById('program_tujuan_select');
+        pSelect.innerHTML = '<option value="" disabled selected>Pilih Program Donasi</option>';
+        progs.forEach(p => {
+            pGrid.innerHTML += `<div class="glass-card p-4 h-24 flex flex-col justify-between border-l-4 border-f2b84b dark:text-white"><div class="text-2xl">${p.i}</div><span class="text-[10px] font-black uppercase italic">${p.n}</span></div>`;
+            const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; pSelect.appendChild(opt);
+        });
     </script>
 </body>
 </html>
