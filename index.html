@@ -90,14 +90,22 @@
 
         <section id="media" class="page space-y-6 pt-4">
             <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter text-center">Media <span class="mustard-brand">& Aktivitas</span></h2>
-            <div class="glass-card p-8 rounded-[3rem] text-center space-y-6">
-                <div class="text-5xl">📸</div>
-                <div class="space-y-2">
-                    <p class="text-lg font-bold text-black">Dokumentasi Kegiatan</p>
-                    <p class="text-xs text-gray-500 leading-relaxed">Lihat seluruh dokumentasi aksi kebaikan dan aktivitas terbaru kami langsung di Instagram resmi.</p>
+            
+            <div class="space-y-6">
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px]" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
                 </div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px]" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+                </div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DXDsL8mibjr/embed" class="w-full h-[500px]" frameborder="0" scrolling="no" allowtransparency="true"></iframe>
+                </div>
+            </div>
+
+            <div class="text-center pt-4">
                 <a href="https://www.instagram.com/temanzayd" target="_blank" class="inline-block w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] shadow-lg active:scale-95 transition">
-                    Buka Instagram @temanzayd
+                    Lihat Selengkapnya di Instagram
                 </a>
             </div>
         </section>
@@ -169,12 +177,12 @@
         const progs = [{n: "Susu Kebaikan", i: "🍼"}, {n: "Palestina", i: "🇵🇸"}, {n: "Bulir Beras", i: "🌾"}, {n: "Kotak Makan", i: "🍱"}, {n: "Borong Bareng", i: "🛒"}, {n: "Belanja Bareng", i: "🛍️"}, {n: "Fighters Day", i: "🎈"}, {n: "Meet Fighters", i: "🤩"}, {n: "KolaborAksi", i: "🤝"}, {n: "Kado Santri", i: "🎁"}, {n: "Pejuang Sehat", i: "🏥"}, {n: "Pejuang Nafkah", i: "🛠️"}, {n: "Jumat Berkah", i: "🕌"}, {n: "Penyintas", i: "🤍"}];
 
         const mGrid = document.getElementById('mitra-grid');
-        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-16 bg-white shadow-sm"><span class="text-[11px] font-extrabold text-center text-gray-700 leading-tight uppercase tracking-tighter">${m}</span></div>`; });
+        mitras.forEach(m => { mGrid.innerHTML += `<div class=\"glass-card p-4 rounded-2xl flex items-center justify-center h-16 bg-white shadow-sm\"><span class=\"text-[11px] font-extrabold text-center text-gray-700 leading-tight uppercase tracking-tighter\">${m}</span></div>`; });
 
         const pGrid = document.getElementById('program-grid');
         const pSelect = document.getElementById('program_tujuan');
         progs.forEach(p => {
-            pGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 bg-white border-l-4 border-f2b84b"><div class="text-2xl">${p.i}</div><span class="text-[11px] font-black uppercase italic text-gray-800 leading-tight">${p.n}</span></div>`;
+            pGrid.innerHTML += `<div class=\"glass-card p-4 rounded-2xl flex flex-col justify-between h-24 bg-white border-l-4 border-f2b84b\"><div class=\"text-2xl\">${p.i}</div><span class=\"text-[11px] font-black uppercase italic text-gray-800 leading-tight\">${p.n}</span></div>`;
             const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; pSelect.appendChild(opt);
         });
 
