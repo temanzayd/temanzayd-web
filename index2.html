@@ -19,17 +19,19 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .icon-box { width: 36px; height: 36px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .photo-frame { border: 8px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-radius: 24px; overflow: hidden; }
+        .instagram-embed-container { width: 100%; min-height: 500px; border-radius: 24px; overflow: hidden; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-[14px]">
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md px-4 py-4 flex justify-around border-b border-gray-100">
-        <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 active">Beranda</button>
-        <button onclick="showPage('about')" id="nav-about" class="nav-item py-2">Mitra</button>
-        <button onclick="showPage('program')" id="nav-program" class="nav-item py-2">Aksi</button>
-        <button onclick="showPage('team')" id="nav-team" class="nav-item py-2">Kami</button>
-        <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2">Donasi</button>
-        <button onclick="showPage('contact')" id="nav-contact" class="nav-item py-2">Hubungi</button>
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md px-4 py-4 flex justify-around border-b border-gray-100 overflow-x-auto whitespace-nowrap">
+        <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 px-2 active">Beranda</button>
+        <button onclick="showPage('about')" id="nav-about" class="nav-item py-2 px-2">Mitra</button>
+        <button onclick="showPage('program')" id="nav-program" class="nav-item py-2 px-2">Program</button>
+        <button onclick="showPage('media')" id="nav-media" class="nav-item py-2 px-2">Media</button>
+        <button onclick="showPage('team')" id="nav-team" class="nav-item py-2 px-2">Kami</button>
+        <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2 px-2">Donasi</button>
+        <button onclick="showPage('contact')" id="nav-contact" class="nav-item py-2 px-2">Hubungi</button>
     </nav>
 
     <main class="flex-grow p-5 space-y-6">
@@ -83,26 +85,30 @@
         </section>
 
         <section id="program" class="page">
-            <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter mb-6 px-2 text-center">Aksi <span class="mustard-brand">Kebaikan</span></h2>
+            <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter mb-6 px-2 text-center">Program <span class="mustard-brand">Kebaikan</span></h2>
             <div class="grid grid-cols-2 gap-3" id="program-grid"></div>
+        </section>
+
+        <section id="media" class="page space-y-6 pt-4">
+            <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter text-center">Media <span class="mustard-brand">& Aktivitas</span></h2>
+            <div class="instagram-embed-container glass-card">
+                <iframe src="https://snapwidget.com/embed/1085002" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; height:800px;"></iframe>
+            </div>
+            <div class="text-center">
+                <a href="https://www.instagram.com/temanzayd" target="_blank" class="text-[11px] font-black uppercase mustard-brand tracking-widest">Lihat Semua di Instagram →</a>
+            </div>
         </section>
 
         <section id="team" class="page space-y-8 pt-4">
             <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter text-center">Tim <span class="mustard-brand">Dibalik Layar</span></h2>
-            
             <div class="space-y-10">
                 <div class="space-y-3">
                     <p class="text-[11px] font-black uppercase tracking-widest mustard-brand text-center">Para Founders</p>
-                    <div class="photo-frame">
-                        <img src="face1.jpg" alt="Founders TemanZayd" class="w-full h-auto">
-                    </div>
+                    <div class="photo-frame"><img src="face1.jpg" alt="Founders" class="w-full h-auto"></div>
                 </div>
-
                 <div class="space-y-3">
                     <p class="text-[11px] font-black uppercase tracking-widest mustard-brand text-center">Keluarga Besar TemanZayd</p>
-                    <div class="photo-frame">
-                        <img src="face2.jpg" alt="Team TemanZayd" class="w-full h-auto">
-                    </div>
+                    <div class="photo-frame"><img src="face2.jpg" alt="Team" class="w-full h-auto"></div>
                 </div>
             </div>
         </section>
@@ -110,16 +116,14 @@
         <section id="donation" class="page space-y-6 pt-4 text-center">
             <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b shadow-xl">
                 <div class="bg-gray-50 p-4 rounded-3xl inline-block mb-6 border border-gray-100 w-3/5 aspect-square flex items-center justify-center mx-auto shadow-inner">
-                    <img src="qr.jpg" alt="QR Code TemanZayd" class="w-full h-full object-contain">
+                    <img src="qr.jpg" alt="QR" class="w-full h-full object-contain">
                 </div>
-                
                 <div class="space-y-1">
                     <p class="text-[10px] opacity-50 uppercase tracking-widest font-bold italic">Bank Syariah Indonesia (BSI)</p>
                     <p class="text-4xl font-mono font-black text-black tracking-tighter">7326328938</p>
                     <p class="text-sm font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
                 </div>
             </div>
-
             <form id="confirmForm" class="space-y-4">
                 <div class="bg-gray-50 rounded-3xl overflow-hidden divide-y divide-gray-200 border border-gray-100 shadow-inner">
                     <input type="text" id="nama" placeholder="Nama Donatur" required class="w-full p-5 bg-transparent outline-none text-sm text-black">
@@ -128,25 +132,20 @@
                         <option value="" disabled selected>Pilih Program Donasi</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] shadow-lg shadow-yellow-600/20 active:scale-95 transition">
-                    Konfirmasi WhatsApp
-                </button>
+                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Konfirmasi WhatsApp</button>
             </form>
         </section>
 
         <section id="contact" class="page space-y-6 pt-4 text-center">
             <h2 class="text-2xl font-black italic text-black uppercase tracking-tighter mb-2 px-2">Hubungi <span class="mustard-brand">Kami</span></h2>
-            <p class="text-[10px] uppercase opacity-40 tracking-widest mb-6 font-bold italic">Terhubung Untuk Kebaikan</p>
-            
             <div class="space-y-4">
-                <a href="https://www.instagram.com/temanzayd?igsh=MWIybnowOHJpdmRibg==" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition">
+                <a href="https://www.instagram.com/temanzayd" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition">
                     <div class="icon-box">📸</div>
                     <div class="text-left">
                         <p class="text-[10px] uppercase font-black opacity-40 leading-none mb-1">Instagram</p>
                         <p class="text-sm font-bold text-black">@temanzayd</p>
                     </div>
                 </a>
-
                 <a href="https://wa.me/6282261814595" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition">
                     <div class="icon-box">💬</div>
                     <div class="text-left">
@@ -164,40 +163,19 @@
 
     <script>
         const mitras = ["Adara Relief", "KNRP", "Warung Relawan", "Cahaya Madani", "Gemma Insani", "Bunda Peduli", "ASF Berbagi", "Sahabat Peduli", "RSCM Jakarta", "AsySyifa RSCM", "Pondok FORDAI", "Ade & Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo", "Perindu Syurga", "Belajar Ceria", "MRI JakBar", "MRI Cimahi", "The Glow Room", "Hanania Travel", "IAP Palestine", "Purple Fighter", "Career Class", "Life For Ummah"];
-        
-        const progs = [
-            {n: "Susu Kebaikan", i: "🍼"}, {n: "Palestina", i: "🇵🇸"}, {n: "Bulir Beras", i: "🌾"}, 
-            {n: "Kotak Makan", i: "🍱"}, {n: "Borong Bareng", i: "🛒"}, {n: "Belanja Bareng", i: "🛍️"}, 
-            {n: "Fighters Day", i: "🎈"}, {n: "Meet Fighters", i: "🤩"}, {n: "KolaborAksi", i: "🤝"}, 
-            {n: "Kado Santri", i: "🎁"}, {n: "Pejuang Sehat", i: "🏥"}, {n: "Pejuang Nafkah", i: "🛠️"}, 
-            {n: "Jumat Berkah", i: "🕌"}, {n: "Penyintas", i: "🤍"}
-        ];
+        const progs = [{n: "Susu Kebaikan", i: "🍼"}, {n: "Palestina", i: "🇵🇸"}, {n: "Bulir Beras", i: "🌾"}, {n: "Kotak Makan", i: "🍱"}, {n: "Borong Bareng", i: "🛒"}, {n: "Belanja Bareng", i: "🛍️"}, {n: "Fighters Day", i: "🎈"}, {n: "Meet Fighters", i: "🤩"}, {n: "KolaborAksi", i: "🤝"}, {n: "Kado Santri", i: "🎁"}, {n: "Pejuang Sehat", i: "🏥"}, {n: "Pejuang Nafkah", i: "🛠️"}, {n: "Jumat Berkah", i: "🕌"}, {n: "Penyintas", i: "🤍"}];
 
         const mGrid = document.getElementById('mitra-grid');
-        mitras.forEach(m => {
-            mGrid.innerHTML += `
-                <div class="glass-card p-4 rounded-2xl flex items-center justify-center h-16 bg-white shadow-sm">
-                    <span class="text-[11px] font-extrabold text-center text-gray-700 leading-tight uppercase tracking-tighter">${m}</span>
-                </div>`;
-        });
+        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-16 bg-white shadow-sm"><span class="text-[11px] font-extrabold text-center text-gray-700 leading-tight uppercase tracking-tighter">${m}</span></div>`; });
 
         const pGrid = document.getElementById('program-grid');
         const pSelect = document.getElementById('program_tujuan');
         progs.forEach(p => {
-            pGrid.innerHTML += `
-                <div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 bg-white border-l-4 border-f2b84b">
-                    <div class="text-2xl">${p.i}</div>
-                    <span class="text-[11px] font-black uppercase italic text-gray-800 leading-tight">${p.n}</span>
-                </div>`;
-            const opt = document.createElement('option');
-            opt.value = p.n;
-            opt.text = `${p.i} ${p.n}`;
-            pSelect.appendChild(opt);
+            pGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 bg-white border-l-4 border-f2b84b"><div class="text-2xl">${p.i}</div><span class="text-[11px] font-black uppercase italic text-gray-800 leading-tight">${p.n}</span></div>`;
+            const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; pSelect.appendChild(opt);
         });
 
-        const generalOption = document.createElement('option');
-        generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum / Lainnya";
-        pSelect.appendChild(generalOption);
+        const generalOption = document.createElement('option'); generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum / Lainnya"; pSelect.appendChild(generalOption);
 
         function showPage(pId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
