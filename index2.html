@@ -6,24 +6,18 @@
     <title>TemanZayd Community - Official Profile</title>
     
     <meta name="description" content="TemanZayd Community - Wadah berbagi kebaikan untuk pejuang sehat, nafkah, yatim, dan dhuafa. Lahir dari perjuangan Zayd.">
-    <meta name="keywords" content="TemanZayd, Komunitas Berbagi, Donasi, Pejuang Sehat, Zayd">
     <meta property="og:title" content="TemanZayd Community">
-    <meta property="og:description" content="Berbagi Bersama Untuk Sesama. Temani perjuangan mereka.">
     <meta property="og:image" content="logo.png">
     
     <meta name="theme-color" content="#f2b84b">
     <link rel="apple-touch-icon" href="logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
-    </script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; }
         .dark body { background-color: #0f172a; color: #f8fafc; }
         .mustard-brand { color: #d99a0d; }
         .bg-mustard { background-color: #f2b84b; color: #1a1a1a; }
@@ -34,22 +28,19 @@
         .page { display: none; }
         .page.active { display: block; animation: slideUp 0.4s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .icon-box { width: 36px; height: 36px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .photo-frame { border: 8px solid #fff; border-radius: 24px; overflow: hidden; }
+        .input-style { width: 100%; padding: 1rem; background: rgba(0,0,0,0.03); border-radius: 1rem; outline: none; font-size: 14px; margin-bottom: 1rem; border: 1px solid transparent; }
+        .dark .input-style { background: rgba(255,255,255,0.05); color: white; border: 1px solid #334155; }
+        #qr-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; }
+        .photo-frame { border: 8px solid #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
         .dark .photo-frame { border: 8px solid #334155; }
-
-        /* Modal Styles */
-        #qr-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-[14px]">
 
     <div id="qr-modal" onclick="closeQR()">
-        <div class="relative max-w-sm w-full bg-white p-4 rounded-[2rem] shadow-2xl" onclick="event.stopPropagation()">
-            <img src="qr.jpg" alt="QR Zoom" class="w-full h-auto rounded-2xl">
-            <button onclick="closeQR()" class="absolute -top-4 -right-4 w-10 h-10 bg-mustard text-white rounded-full font-black shadow-lg">✕</button>
-            <p class="text-center text-[10px] font-black uppercase tracking-widest mt-4 dark:text-black">Scan QRIS TemanZayd</p>
+        <div class="relative max-w-sm w-full bg-white p-4 rounded-[2rem]" onclick="event.stopPropagation()">
+            <img src="qr.jpg" alt="QR" class="w-full h-auto rounded-2xl">
+            <button onclick="closeQR()" class="absolute -top-4 -right-4 w-10 h-10 bg-mustard text-white rounded-full font-black">✕</button>
         </div>
     </div>
 
@@ -61,6 +52,7 @@
         <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 px-2 active">Beranda</button>
         <button onclick="showPage('about')" id="nav-about" class="nav-item py-2 px-2">Mitra</button>
         <button onclick="showPage('program')" id="nav-program" class="nav-item py-2 px-2">Program</button>
+        <button onclick="showPage('ajukan')" id="nav-ajukan" class="nav-item py-2 px-2">Ajukan</button>
         <button onclick="showPage('media')" id="nav-media" class="nav-item py-2 px-2">Media</button>
         <button onclick="showPage('team')" id="nav-team" class="nav-item py-2 px-2">Kami</button>
         <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2 px-2">Donasi</button>
@@ -75,7 +67,6 @@
                 <h1 class="text-4xl font-black italic uppercase tracking-tighter">TEMAN<span class="mustard-brand">ZAYD</span></h1>
                 <p class="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-1 font-bold italic">Berbagi Bersama Untuk Sesama</p>
             </div>
-
             <div class="grid grid-cols-2 gap-3">
                 <div class="glass-card p-5 rounded-3xl border-b-4 border-f2b84b">
                     <div class="text-3xl font-black mustard-brand">> 5.000+</div>
@@ -86,40 +77,44 @@
                     <div class="text-[10px] uppercase tracking-widest opacity-60 font-black">Relawan Aktif</div>
                 </div>
             </div>
-
             <div class="glass-card p-6 rounded-[2.5rem]">
                 <h3 class="text-[11px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian (2021)</h3>
-                <p class="text-[13px] leading-relaxed italic opacity-80">
-                    Lahir dari pengalaman pribadi <span class="font-bold text-xs">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-xs">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold">Zayd (Cancer Warrior)</span>.
-                </p>
+                <p class="text-[13px] leading-relaxed italic opacity-80">Lahir dari pengalaman pribadi Ashma Mardhiyatu Musyaffa & Robby Rachmandias bersama putra mereka, Zayd (Cancer Warrior).</p>
             </div>
         </section>
 
-        <section id="donation" class="page space-y-6 pt-4 text-center">
-            <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b shadow-xl">
-                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto shadow-inner active:scale-95 transition cursor-pointer group">
-                    <img src="qr.jpg" alt="QR" class="w-full h-full object-contain" loading="lazy">
-                    <p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100 transition">Klik untuk Zoom</p>
-                </div>
-                <div class="space-y-2">
-                    <p class="text-[10px] opacity-50 uppercase tracking-widest font-bold italic">BSI - Klik Untuk Salin</p>
-                    <button onclick="copyRekening()" class="group relative">
-                        <p id="rekening" class="text-4xl font-mono font-black tracking-tighter">7326328938</p>
-                        <div id="copy-toast" class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] py-1 px-3 rounded-full opacity-0 transition-opacity">Tersalin!</div>
-                    </button>
-                    <p class="text-sm font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
-                </div>
-            </div>
-            <form id="confirmForm" class="space-y-4">
-                <div class="bg-gray-50 dark:bg-slate-800 rounded-3xl overflow-hidden divide-y divide-gray-200 dark:divide-slate-700 border border-gray-100 dark:border-slate-800">
-                    <input type="text" id="nama" placeholder="Nama Donatur" required class="w-full p-5 bg-transparent outline-none text-sm">
-                    <input type="number" id="nominal" placeholder="Nominal Rp" required class="w-full p-5 bg-transparent outline-none text-sm">
-                    <select id="program_tujuan" required class="w-full p-5 bg-transparent outline-none text-sm font-bold opacity-60">
-                        <option value="" disabled selected>Pilih Program Donasi</option>
+        <section id="ajukan" class="page space-y-6">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Ajukan <span class="mustard-brand">Bantuan</span></h2>
+            <div class="glass-card p-6 rounded-[2.5rem]">
+                <p class="text-[10px] uppercase font-black opacity-40 mb-4 tracking-widest">Formulir Kaleng Susu Kebaikan</p>
+                <form id="formAjukan" class="space-y-1">
+                    <input type="hidden" name="Tipe_Form" value="Pengajuan Bantuan">
+                    <input type="text" name="Nama_Pasien" placeholder="Nama Pasien" required class="input-style">
+                    <input type="text" name="Umur" placeholder="Umur (Contoh: 16 Bulan / 3 Tahun 5 Bulan)" required class="input-style">
+                    <select name="Jenis_Kelamin" required class="input-style">
+                        <option value="" disabled selected>Jenis Kelamin</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
                     </select>
-                </div>
-                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Konfirmasi WhatsApp</button>
-            </form>
+                    <textarea name="Alamat_Domisili" placeholder="Alamat Lengkap Domisili" required class="input-style h-24"></textarea>
+                    <input type="text" name="Diagnosa" placeholder="Penyakit / Diagnosa" required class="input-style">
+                    <input type="text" name="Kebutuhan_Susu" placeholder="Jenis/Merk/Varian Susu (Saran Dokter)" required class="input-style">
+                    <input type="text" name="Nama_Pendamping" placeholder="Nama Pendamping" required class="input-style">
+                    <input type="number" name="WA_Pendamping" placeholder="Kontak Pendamping (WhatsApp)" required class="input-style">
+                    
+                    <div class="p-4 bg-yellow-50 dark:bg-slate-800 rounded-2xl mb-4">
+                        <label class="flex items-start space-x-3 cursor-pointer">
+                            <input type="checkbox" name="Persetujuan_Dokumentasi" value="Ya" required class="mt-1">
+                            <span class="text-[10px] leading-tight opacity-70 italic font-bold">Bersedia memberikan dokumentasi foto pasien bersama bantuan susu untuk pelaporan di Media Sosial TemanZayd.</span>
+                        </label>
+                    </div>
+
+                    <p class="text-[9px] font-black opacity-40 uppercase mb-2">Link Lampiran (Diagnosa, Foto Anak, SKTM):</p>
+                    <input type="url" name="Link_Lampiran" placeholder="Masukkan Link GDrive / Dropbox" required class="input-style">
+                    
+                    <button type="submit" id="btnAjukan" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Kirim Pengajuan</button>
+                </form>
+            </div>
         </section>
 
         <section id="media" class="page space-y-6 pt-4">
@@ -137,42 +132,48 @@
             </div>
         </section>
 
-        <section id="about" class="page">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 px-2 text-center">Sinergi <span class="mustard-brand">Kolaborasi</span></h2>
-            <div id="mitra-grid" class="grid grid-cols-2 gap-3"></div>
-        </section>
-
-        <section id="program" class="page">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-6 px-2 text-center">Program <span class="mustard-brand">Kebaikan</span></h2>
-            <div id="program-grid" class="grid grid-cols-2 gap-3"></div>
-        </section>
-
-        <section id="team" class="page space-y-8 pt-4">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Tim <span class="mustard-brand">Dibalik Layar</span></h2>
-            <div class="space-y-10">
-                <div class="space-y-3">
-                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Para Founders</p>
-                    <div class="photo-frame"><img src="face1.jpg" alt="Founders" class="w-full h-auto" loading="lazy"></div>
+        <section id="donation" class="page space-y-6 pt-4 text-center">
+            <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b shadow-xl">
+                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto shadow-inner cursor-pointer group">
+                    <img src="qr.jpg" alt="QR" class="w-full h-full object-contain" loading="lazy">
+                    <p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100">Klik untuk Zoom</p>
                 </div>
-                <div class="space-y-3">
-                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Keluarga Besar TemanZayd</p>
-                    <div class="photo-frame"><img src="face2.jpg" alt="Team" class="w-full h-auto" loading="lazy"></div>
+                <div class="space-y-2">
+                    <p class="text-[10px] opacity-50 uppercase tracking-widest font-bold italic">BSI - Klik Untuk Salin</p>
+                    <button onclick="copyRekening()" class="group relative">
+                        <p id="rekening" class="text-4xl font-mono font-black tracking-tighter">7326328938</p>
+                        <div id="copy-toast" class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] py-1 px-3 rounded-full opacity-0 transition-opacity">Tersalin!</div>
+                    </button>
+                    <p class="text-sm font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
                 </div>
             </div>
+            <form id="formDonasi" class="glass-card p-6 rounded-[2.5rem] space-y-1">
+                <input type="hidden" name="Tipe_Form" value="Konfirmasi Donasi">
+                <input type="text" name="Nama_Donatur" placeholder="Nama Donatur" required class="input-style">
+                <input type="number" name="Nominal" placeholder="Nominal Rp" required class="input-style">
+                <select id="program_tujuan" name="Program" required class="input-style font-bold opacity-60"></select>
+                <button type="submit" id="btnDonasi" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Konfirmasi WhatsApp</button>
+            </form>
         </section>
 
         <section id="contact" class="page space-y-6 pt-4 text-center">
             <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 px-2 text-center">Hubungi <span class="mustard-brand">Kami</span></h2>
-            <div class="space-y-4">
-                <a href="https://www.instagram.com/temanzayd" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition text-left">
-                    <div class="icon-box">📸</div>
-                    <div><p class="text-[10px] uppercase font-black opacity-40 leading-none mb-1">Instagram</p><p class="text-sm font-bold">@temanzayd</p></div>
-                </a>
-                <a href="https://wa.me/6282261814595" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition text-left">
-                    <div class="icon-box">💬</div>
-                    <div><p class="text-[10px] uppercase font-black opacity-40 leading-none mb-1">WhatsApp Admin</p><p class="text-sm font-bold">Salma (Admin)</p></div>
-                </a>
+            <div class="glass-card p-6 rounded-[2.5rem] text-left">
+                <form id="formHubungi" class="space-y-1">
+                    <input type="hidden" name="Tipe_Form" value="Pertanyaan Umum">
+                    <input type="text" name="Nama" placeholder="Nama Anda" required class="input-style">
+                    <input type="text" name="Kontak" placeholder="WhatsApp / Email" required class="input-style">
+                    <textarea name="Pertanyaan" placeholder="Pertanyaan atau Pesan" required class="input-style h-32"></textarea>
+                    <button type="submit" id="btnHubungi" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Kirim Pesan</button>
+                </form>
             </div>
+        </section>
+
+        <section id="about" class="page"><div id="mitra-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="program" class="page"><div id="program-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="team" class="page space-y-8">
+            <div class="photo-frame"><img src="face1.jpg" class="w-full h-auto" loading="lazy"></div>
+            <div class="photo-frame"><img src="face2.jpg" class="w-full h-auto" loading="lazy"></div>
         </section>
 
     </main>
@@ -182,38 +183,39 @@
     </footer>
 
     <script>
-        function openQR() { document.getElementById('qr-modal').style.display = 'flex'; }
-        function closeQR() { document.getElementById('qr-modal').style.display = 'none'; }
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3GRU8qc1FsVaNvXwCsbLyJn6Z84Ujfh9uXLfbsbVhf-zCgziyfnn4bCYqntND16s5nw/exec';
 
-        function copyRekening() {
-            const rek = document.getElementById('rekening').innerText;
-            navigator.clipboard.writeText(rek);
-            const toast = document.getElementById('copy-toast');
-            toast.style.opacity = '1';
-            setTimeout(() => { toast.style.opacity = '0'; }, 2000);
+        // Form Submission Logic
+        async function handleForm(event, callback) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            
+            btn.innerText = "MENGIRIM...";
+            btn.disabled = true;
+
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', body: new FormData(form) });
+                if (callback) callback(new FormData(form));
+                form.reset();
+            } catch (error) {
+                alert("Gagal mengirim data. Silakan coba lagi.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
-        function toggleDarkMode() {
-            document.documentElement.classList.toggle('dark');
-            const icon = document.getElementById('dark-icon');
-            icon.innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
-        }
+        document.getElementById('formDonasi').addEventListener('submit', (e) => handleForm(e, (data) => {
+            const text = `Halo Admin Salma, saya ingin konfirmasi donasi.%0ANama: ${data.get('Nama_Donatur')}%0ANominal: Rp${data.get('Nominal')}%0AProgram: ${data.get('Program')}`;
+            window.location.href = `https://wa.me/6282261814595?text=${text}`;
+        }));
 
-        const mitras = ["Adara Relief International", "Komite Nasional untuk Rakyat Palestina (KNRP)", "Warung Makan Relawan (WMR)", "Yayasan Cahaya Madani Indonesia", "Gemma Insani Foundation", "Rumah Singgah Bunda Peduli", "Rumah Singgah ASF (Anonim Sahabat Fillah) Berbagi", "Shelter Sahabat Peduli", "RSCM Jakarta", "DKM Masjid AsySyifa RSCM", "Pondok Tahfidz Quran FORDAI", "Ade and Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo - PT Data Sinergitama Jaya Tbk", "Perindu Syurga", "Rumah Belajar Ceria", "Masyarakat Relawan Indonesia (MRI) Jakarta Barat", "Masyarakat Relawan Indonesia (MRI)  Cimahi", "The Glow Room", "Hanania Tour and Travel", "Individual Action 4 Palestine (IAP)", "Purple Moment Fighter", "Career Class Id", "Life For Ummah Indonesia"];
-        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}];
+        document.getElementById('formAjukan').addEventListener('submit', (e) => handleForm(e, () => alert("Pengajuan Kaleng Susu Kebaikan berhasil dikirim!")));
+        document.getElementById('formHubungi').addEventListener('submit', (e) => handleForm(e, () => alert("Pesan Anda telah terkirim!")));
 
-        const mGrid = document.getElementById('mitra-grid');
-        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20 text-center"><span class="text-[10px] font-extrabold uppercase leading-tight">${m}</span></div>`; });
-
-        const pGrid = document.getElementById('program-grid');
-        const pSelect = document.getElementById('program_tujuan');
-        progs.forEach(p => {
-            pGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 border-l-4 border-f2b84b"><div class="text-2xl">${p.i}</div><span class="text-[10px] font-black uppercase italic leading-tight">${p.n}</span></div>`;
-            const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; pSelect.appendChild(opt);
-        });
-
-        const generalOption = document.createElement('option'); generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum"; pSelect.appendChild(generalOption);
-
+        // Navigation & UI
         function showPage(pId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -222,11 +224,30 @@
             window.scrollTo({top: 0, behavior: 'smooth'});
         }
 
-        document.getElementById('confirmForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const text = `Halo Admin Salma, saya ingin konfirmasi donasi.%0ANama: ${document.getElementById('nama').value}%0ANominal: Rp${document.getElementById('nominal').value}%0AProgram: ${document.getElementById('program_tujuan').value}`;
-            window.location.href = `https://wa.me/6282261814595?text=${text}`;
+        function openQR() { document.getElementById('qr-modal').style.display = 'flex'; }
+        function closeQR() { document.getElementById('qr-modal').style.display = 'none'; }
+        
+        function copyRekening() {
+            navigator.clipboard.writeText('7326328938');
+            const t = document.getElementById('copy-toast'); t.style.opacity = '1';
+            setTimeout(() => t.style.opacity = '0', 2000);
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            document.getElementById('dark-icon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+        }
+
+        // Populators
+        const mitras = ["Adara Relief International", "Komite Nasional untuk Rakyat Palestina (KNRP)", "Warung Makan Relawan (WMR)", "Yayasan Cahaya Madani Indonesia", "Gemma Insani Foundation", "Rumah Singgah Bunda Peduli", "Rumah Singgah ASF Berbagi", "Shelter Sahabat Peduli", "RSCM Jakarta", "DKM Masjid AsySyifa RSCM", "Pondok Tahfidz Quran FORDAI", "Ade and Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo - PT Data Sinergitama Jaya Tbk", "Perindu Syurga", "Rumah Belajar Ceria", "Masyarakat Relawan Indonesia (MRI) Jakarta Barat", "Masyarakat Relawan Indonesia (MRI)  Cimahi", "The Glow Room", "Hanania Tour and Travel", "Individual Action 4 Palestine (IAP)", "Purple Moment Fighter", "Career Class Id", "Life For Ummah Indonesia"];
+        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}];
+
+        mitras.forEach(m => { document.getElementById('mitra-grid').innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20 text-center"><span class="text-[10px] font-extrabold uppercase leading-tight">${m}</span></div>`; });
+        progs.forEach(p => {
+            document.getElementById('program-grid').innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 border-l-4 border-f2b84b"><div class="text-2xl">${p.i}</div><span class="text-[10px] font-black uppercase italic leading-tight">${p.n}</span></div>`;
+            const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; document.getElementById('program_tujuan').appendChild(opt);
         });
+        const generalOption = document.createElement('option'); generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum"; document.getElementById('program_tujuan').appendChild(generalOption);
     </script>
 </body>
 </html>
