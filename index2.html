@@ -37,9 +37,21 @@
         .icon-box { width: 36px; height: 36px; background: #f2b84b; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .photo-frame { border: 8px solid #fff; border-radius: 24px; overflow: hidden; }
         .dark .photo-frame { border: 8px solid #334155; }
+
+        /* Modal Styles */
+        #qr-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-[14px]">
+
+    <div id="qr-modal" onclick="closeQR()">
+        <div class="relative max-w-sm w-full bg-white p-4 rounded-[2rem] shadow-2xl" onclick="event.stopPropagation()">
+            <img src="qr.jpg" alt="QR Zoom" class="w-full h-auto rounded-2xl">
+            <button onclick="closeQR()" class="absolute -top-4 -right-4 w-10 h-10 bg-mustard text-white rounded-full font-black shadow-lg">✕</button>
+            <p class="text-center text-[10px] font-black uppercase tracking-widest mt-4 dark:text-black">Scan QRIS TemanZayd</p>
+        </div>
+    </div>
 
     <button onclick="toggleDarkMode()" class="fixed bottom-6 right-6 z-[100] w-12 h-12 bg-mustard rounded-full shadow-lg flex items-center justify-center text-xl">
         <span id="dark-icon">🌙</span>
@@ -57,19 +69,19 @@
 
     <main class="flex-grow p-5 space-y-6">
         
-        <section id="home" class="page active space-y-5">
-            <div class="text-center py-4">
+        <section id="home" class="page active space-y-5 text-center">
+            <div class="py-4">
                 <img src="logo.png" alt="Logo" class="w-24 mx-auto mb-4" loading="lazy">
                 <h1 class="text-4xl font-black italic uppercase tracking-tighter">TEMAN<span class="mustard-brand">ZAYD</span></h1>
                 <p class="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-1 font-bold italic">Berbagi Bersama Untuk Sesama</p>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-                <div class="glass-card p-5 rounded-3xl text-center border-b-4 border-f2b84b">
+                <div class="glass-card p-5 rounded-3xl border-b-4 border-f2b84b">
                     <div class="text-3xl font-black mustard-brand">> 5.000+</div>
                     <div class="text-[10px] uppercase tracking-widest opacity-60 font-black">Penerima Manfaat</div>
                 </div>
-                <div class="glass-card p-5 rounded-3xl text-center border-b-4 border-f2b84b">
+                <div class="glass-card p-5 rounded-3xl border-b-4 border-f2b84b">
                     <div class="text-3xl font-black mustard-brand">30+</div>
                     <div class="text-[10px] uppercase tracking-widest opacity-60 font-black">Relawan Aktif</div>
                 </div>
@@ -81,71 +93,13 @@
                     Lahir dari pengalaman pribadi <span class="font-bold text-xs">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold text-xs">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold">Zayd (Cancer Warrior)</span>.
                 </p>
             </div>
-            
-            <div class="space-y-3">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] px-2 opacity-40">Tujuan & Misi</h3>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
-                    <div class="icon-box">🤝</div>
-                    <p class="text-[12px] text-gray-700 dark:text-gray-300 font-medium">Memberikan dukungan langsung bagi pejuang sehat, nafkah, yatim, dhuafa, dan korban bencana.</p>
-                </div>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
-                    <div class="icon-box">💎</div>
-                    <p class="text-[12px] text-gray-700 dark:text-gray-300 font-medium">Menyelenggarakan program pemberdayaan berkelanjutan dengan transparansi dan amanah.</p>
-                </div>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4">
-                    <div class="icon-box">✨</div>
-                    <p class="text-[12px] text-gray-700 dark:text-gray-300 font-medium">Menyebarkan nilai kebaikan melalui dakwah dan penggalangan semangat gotong royong.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="page">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 px-2 text-center">Sinergi <span class="mustard-brand">Kolaborasi</span></h2>
-            <p class="text-[10px] text-center uppercase opacity-40 tracking-widest mb-6 font-bold">Kerja sama dengan siapa saja</p>
-            <div id="mitra-grid" class="grid grid-cols-2 gap-3"></div>
-        </section>
-
-        <section id="program" class="page">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-6 px-2 text-center">Program <span class="mustard-brand">Kebaikan</span></h2>
-            <div id="program-grid" class="grid grid-cols-2 gap-3"></div>
-        </section>
-
-        <section id="media" class="page space-y-6 pt-4">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Media <span class="mustard-brand">& Aktivitas</span></h2>
-            <div class="space-y-6">
-                <div class="glass-card overflow-hidden rounded-[2.5rem]">
-                    <iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
-                </div>
-                <div class="glass-card overflow-hidden rounded-[2.5rem]">
-                    <iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
-                </div>
-                <div class="glass-card overflow-hidden rounded-[2.5rem]">
-                    <iframe src="https://www.instagram.com/p/DSXQ8sWD7XV/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
-                </div>
-            </div>
-            <div class="text-center pt-4">
-                <a href="https://www.instagram.com/temanzayd" target="_blank" class="inline-block w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] shadow-lg active:scale-95 transition">Lihat Selengkapnya di Instagram</a>
-            </div>
-        </section>
-
-        <section id="team" class="page space-y-8 pt-4">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Tim <span class="mustard-brand">Dibalik Layar</span></h2>
-            <div class="space-y-10">
-                <div class="space-y-3">
-                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Para Founders</p>
-                    <div class="photo-frame"><img src="face1.jpg" alt="Founders" class="w-full h-auto" loading="lazy"></div>
-                </div>
-                <div class="space-y-3">
-                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Keluarga Besar TemanZayd</p>
-                    <div class="photo-frame"><img src="face2.jpg" alt="Team" class="w-full h-auto" loading="lazy"></div>
-                </div>
-            </div>
         </section>
 
         <section id="donation" class="page space-y-6 pt-4 text-center">
             <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b shadow-xl">
-                <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex items-center justify-center mx-auto shadow-inner">
+                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto shadow-inner active:scale-95 transition cursor-pointer group">
                     <img src="qr.jpg" alt="QR" class="w-full h-full object-contain" loading="lazy">
+                    <p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100 transition">Klik untuk Zoom</p>
                 </div>
                 <div class="space-y-2">
                     <p class="text-[10px] opacity-50 uppercase tracking-widest font-bold italic">BSI - Klik Untuk Salin</p>
@@ -166,6 +120,45 @@
                 </div>
                 <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px] active:scale-95 transition">Konfirmasi WhatsApp</button>
             </form>
+        </section>
+
+        <section id="media" class="page space-y-6 pt-4">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Media <span class="mustard-brand">& Aktivitas</span></h2>
+            <div class="space-y-6">
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
+                </div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
+                </div>
+                <div class="glass-card overflow-hidden rounded-[2.5rem]">
+                    <iframe src="https://www.instagram.com/p/DSXQ8sWD7XV/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 px-2 text-center">Sinergi <span class="mustard-brand">Kolaborasi</span></h2>
+            <div id="mitra-grid" class="grid grid-cols-2 gap-3"></div>
+        </section>
+
+        <section id="program" class="page">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-6 px-2 text-center">Program <span class="mustard-brand">Kebaikan</span></h2>
+            <div id="program-grid" class="grid grid-cols-2 gap-3"></div>
+        </section>
+
+        <section id="team" class="page space-y-8 pt-4">
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Tim <span class="mustard-brand">Dibalik Layar</span></h2>
+            <div class="space-y-10">
+                <div class="space-y-3">
+                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Para Founders</p>
+                    <div class="photo-frame"><img src="face1.jpg" alt="Founders" class="w-full h-auto" loading="lazy"></div>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-[11px] font-black uppercase text-center mustard-brand">Keluarga Besar TemanZayd</p>
+                    <div class="photo-frame"><img src="face2.jpg" alt="Team" class="w-full h-auto" loading="lazy"></div>
+                </div>
+            </div>
         </section>
 
         <section id="contact" class="page space-y-6 pt-4 text-center">
@@ -189,6 +182,9 @@
     </footer>
 
     <script>
+        function openQR() { document.getElementById('qr-modal').style.display = 'flex'; }
+        function closeQR() { document.getElementById('qr-modal').style.display = 'none'; }
+
         function copyRekening() {
             const rek = document.getElementById('rekening').innerText;
             navigator.clipboard.writeText(rek);
@@ -207,7 +203,7 @@
         const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}];
 
         const mGrid = document.getElementById('mitra-grid');
-        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20"><span class="text-[10px] font-extrabold uppercase text-center leading-tight">${m}</span></div>`; });
+        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20 text-center"><span class="text-[10px] font-extrabold uppercase leading-tight">${m}</span></div>`; });
 
         const pGrid = document.getElementById('program-grid');
         const pSelect = document.getElementById('program_tujuan');
