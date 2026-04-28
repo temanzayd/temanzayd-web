@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TemanZayd Community - Official Profile</title>
-    
-    <meta name="description" content="TemanZayd Community - Wadah berbagi kebaikan untuk pejuang sehat, nafkah, yatim, dan dhuafa.">
-    <meta property="og:title" content="TemanZayd Community">
-    <meta property="og:image" content="logo.png">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
     <style>
         body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; }
         .dark body { background-color: #0f172a; color: #f8fafc; }
@@ -72,27 +66,21 @@
                     <div class="text-[10px] uppercase tracking-widest opacity-60 font-black">Relawan Aktif</div>
                 </div>
             </div>
-            <div class="glass-card p-6 rounded-[2.5rem]">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian (2021)</h3>
-                <p class="text-[13px] leading-relaxed italic opacity-80">Lahir dari pengalaman pribadi Ashma Mardhiyatu Musyaffa & Robby Rachmandias bersama putra mereka, Zayd (Cancer Warrior).</p>
-            </div>
         </section>
 
         <section id="ajukan" class="page space-y-6">
             <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center">Ajukan <span class="mustard-brand">Bantuan</span></h2>
             <div class="glass-card p-6 rounded-[2.5rem]">
-                <p class="text-[10px] uppercase font-black opacity-40 mb-4 tracking-widest">Formulir Kaleng Susu Kebaikan</p>
                 <form id="formAjukan" class="space-y-1">
                     <input type="hidden" name="Tipe_Form" value="Pengajuan Bantuan">
                     <input type="text" name="Nama_Pasien" placeholder="Nama Pasien" required class="input-style">
-                    <input type="text" name="Umur" placeholder="Umur (Contoh: 16 Bulan / 3 Thn 5 Bln)" required class="input-style">
-                    <select name="Gender" required class="input-style"><option value="" disabled selected>Jenis Kelamin</option><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+                    <input type="text" name="Umur" placeholder="Umur" required class="input-style">
                     <textarea name="Alamat" placeholder="Alamat Domisili" required class="input-style h-24"></textarea>
                     <input type="text" name="Diagnosa" placeholder="Diagnosa Penyakit" required class="input-style">
-                    <input type="text" name="Merk_Susu" placeholder="Merk Susu (Saran Dokter)" required class="input-style">
+                    <input type="text" name="Merk_Susu" placeholder="Merk Susu" required class="input-style">
                     <input type="text" name="Nama_Pendamping" placeholder="Nama Pendamping" required class="input-style">
                     <input type="number" name="WA_Pendamping" placeholder="WA Pendamping" required class="input-style">
-                    <input type="url" name="Link_Lampiran" placeholder="Link GDrive (Diagnosa, Foto, SKTM)" required class="input-style">
+                    <input type="url" name="Link_Lampiran" placeholder="Link GDrive" required class="input-style">
                     <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Pengajuan</button>
                 </form>
             </div>
@@ -100,9 +88,8 @@
 
         <section id="donation" class="page space-y-6 pt-4 text-center">
             <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b">
-                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto cursor-pointer group">
+                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto cursor-pointer">
                     <img src="qr.jpg" alt="QR" class="w-full h-full object-contain">
-                    <p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100">Klik untuk Zoom</p>
                 </div>
                 <button onclick="copyRekening()" class="relative">
                     <p id="rekening" class="text-4xl font-mono font-black tracking-tighter">7326328938</p>
@@ -112,15 +99,15 @@
             </div>
             <form id="formDonasi" class="glass-card p-6 rounded-[2.5rem] space-y-1">
                 <input type="hidden" name="Tipe_Form" value="Konfirmasi Donasi">
-                <input type="text" name="Nama_Donatur" placeholder="Nama Donatur" required class="input-style">
-                <input type="number" name="Nominal" placeholder="Nominal Rp" required class="input-style">
-                <select id="program_tujuan" name="Program" required class="input-style font-bold opacity-60"></select>
+                <input type="text" name="Nama_Donatur" id="donatur_nama" placeholder="Nama Donatur" required class="input-style">
+                <input type="number" name="Nominal" id="donatur_nominal" placeholder="Nominal Rp" required class="input-style">
+                <select id="program_tujuan_select" name="Program" required class="input-style font-bold opacity-60"></select>
                 <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Konfirmasi WhatsApp</button>
             </form>
         </section>
 
         <section id="contact" class="page space-y-6 pt-4 text-center">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2">Hubungi <span class="mustard-brand">Kami</span></h2>
+            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 text-center">Hubungi <span class="mustard-brand">Kami</span></h2>
             <div class="glass-card p-6 rounded-[2.5rem] text-left">
                 <form id="formHubungi" class="space-y-1">
                     <input type="hidden" name="Tipe_Form" value="Pertanyaan Umum">
@@ -136,12 +123,9 @@
         <section id="program" class="page"><div id="program-grid" class="grid grid-cols-2 gap-3"></div></section>
         <section id="media" class="page space-y-6">
             <iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px] rounded-[2.5rem] overflow-hidden" frameborder="0"></iframe>
-            <iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px] rounded-[2.5rem] overflow-hidden" frameborder="0"></iframe>
-            <iframe src="https://www.instagram.com/p/DSXQ8sWD7XV/embed" class="w-full h-[500px] rounded-[2.5rem] overflow-hidden" frameborder="0"></iframe>
         </section>
         <section id="team" class="page space-y-8">
             <div class="photo-frame"><img src="face1.jpg" class="w-full h-auto"></div>
-            <div class="photo-frame"><img src="face2.jpg" class="w-full h-auto"></div>
         </section>
 
     </main>
@@ -161,6 +145,7 @@
                 const params = new URLSearchParams();
                 formData.forEach((value, key) => params.append(key, value));
 
+                // Kirim ke Google Sheets
                 await fetch(SCRIPT_URL, { 
                     method: 'POST', 
                     mode: 'no-cors',
@@ -178,10 +163,16 @@
             }
         }
 
+        // Fix: Mengambil value program yang benar
         document.getElementById('formDonasi').addEventListener('submit', (e) => handleForm(e, (data) => {
-            const text = `Halo Admin Salma, saya ingin konfirmasi donasi.%0ANama: ${data.get('Nama_Donatur')}%0ANominal: Rp${data.get('Nominal')}%0AProgram: ${data.get('Program')}`;
+            const nama = data.get('Nama_Donatur');
+            const nominal = data.get('Nominal');
+            const program = data.get('Program'); // Mengambil value dari select yang bernama 'Program'
+            
+            const text = `Halo Admin Salma, saya ingin konfirmasi donasi.%0ANama: ${nama}%0ANominal: Rp${nominal}%0AProgram: ${program}`;
             window.location.href = `https://wa.me/6282261814595?text=${text}`;
         }));
+
         document.getElementById('formAjukan').addEventListener('submit', (e) => handleForm(e));
         document.getElementById('formHubungi').addEventListener('submit', (e) => handleForm(e));
 
@@ -198,15 +189,20 @@
         function copyRekening() { navigator.clipboard.writeText('7326328938'); const t = document.getElementById('copy-toast'); t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000); }
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); document.getElementById('dark-icon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙'; }
 
-        const mitras = ["Adara Relief International", "Komite Nasional untuk Rakyat Palestina (KNRP)", "Warung Makan Relawan (WMR)", "Yayasan Cahaya Madani Indonesia", "Gemma Insani Foundation", "Rumah Singgah Bunda Peduli", "Rumah Singgah ASF Berbagi", "Shelter Sahabat Peduli", "RSCM Jakarta", "DKM Masjid AsySyifa RSCM", "Pondok Tahfidz Quran FORDAI", "Ade and Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo - PT Data Sinergitama Jaya Tbk", "Perindu Syurga", "Rumah Belajar Ceria", "MRI Jakarta Barat", "MRI Cimahi", "The Glow Room", "Hanania Tour and Travel", "Individual Action 4 Palestine (IAP)", "Purple Moment Fighter", "Career Class Id", "Life For Ummah Indonesia"];
-        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}];
+        const mitras = ["Adara Relief International", "KNRP", "Warung Makan Relawan", "Yayasan Cahaya Madani", "Elitery", "Life For Ummah"];
+        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#SedekahUmum", i: "✨"}];
 
         mitras.forEach(m => { document.getElementById('mitra-grid').innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20 text-center"><span class="text-[10px] font-extrabold uppercase leading-tight">${m}</span></div>`; });
+        
+        const pSelect = document.getElementById('program_tujuan_select');
         progs.forEach(p => {
             document.getElementById('program-grid').innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 border-l-4 border-f2b84b"><div class="text-2xl">${p.i}</div><span class="text-[10px] font-black uppercase italic">${p.n}</span></div>`;
-            const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; document.getElementById('program_tujuan').appendChild(opt);
+            
+            const opt = document.createElement('option');
+            opt.value = p.n; // Memberikan value agar data tidak kosong
+            opt.text = `${p.i} ${p.n}`;
+            pSelect.appendChild(opt);
         });
-        const generalOption = document.createElement('option'); generalOption.value = "Sedekah Umum"; generalOption.text = "✨ Sedekah Umum"; document.getElementById('program_tujuan').appendChild(generalOption);
     </script>
 </body>
 </html>
