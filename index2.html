@@ -8,237 +8,221 @@
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; scroll-behavior: smooth; overflow-x: hidden; }
         .dark body { background-color: #0f172a; color: #f8fafc; }
         .mustard-brand { color: #d99a0d; }
         .bg-mustard { background-color: #f2b84b; color: #1a1a1a; }
-        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); transition: 0.3s; }
-        .dark .glass-card { background: #1e293b; border: 1px solid #334155; }
-        .nav-item { color: #888; transition: 0.3s; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .nav-item.active { color: #d99a0d; border-bottom: 3px solid #f2b84b; }
-        .page { display: none; }
+        
+        /* SIDEBAR LOGIC */
+        #sidebar { 
+            position: fixed; top: 0; left: -280px; width: 280px; height: 100%; 
+            z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+        }
+        #sidebar.open { left: 0; }
+        #overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.5); 
+            z-index: 999; display: none; backdrop-filter: blur(4px);
+        }
+        #overlay.active { display: block; }
+
+        .nav-item-side { 
+            width: 100%; text-align: left; padding: 1rem 1.5rem; 
+            font-weight: 700; text-transform: uppercase; font-size: 13px;
+            letter-spacing: 0.05em; border-radius: 1rem; transition: 0.3s;
+            margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px;
+        }
+        .nav-item-side.active { background-color: #f2b84b; color: white; }
+
+        /* OTHER STYLES */
+        .page { display: none; padding-top: 80px; }
         .page.active { display: block; animation: slideUp 0.4s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .glass-card { background: #ffffff; border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-radius: 2rem; }
+        .dark .glass-card { background: #1e293b; border: 1px solid #334155; }
         .input-style { width: 100%; padding: 0.8rem; background: rgba(0,0,0,0.03); border-radius: 0.8rem; outline: none; font-size: 13px; margin-bottom: 0.8rem; border: 1px solid transparent; }
         .dark .input-style { background: rgba(255,255,255,0.05); color: white; border: 1px solid #334155; }
-        #qr-modal { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 20px; }
-        .photo-frame { border: 8px solid #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-        .dark .photo-frame { border: 8px solid #334155; }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
         .accordion-item.active .accordion-content { max-height: 5000px; }
-        .accordion-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen text-[14px]">
+<body class="flex flex-col min-h-screen">
 
-    <div id="qr-modal" onclick="closeQR()">
-        <div class="relative max-w-sm w-full bg-white p-4 rounded-[2rem]" onclick="event.stopPropagation()">
-            <img src="qr.jpg" alt="QR" class="w-full h-auto rounded-2xl">
-            <button onclick="closeQR()" class="absolute -top-4 -right-4 w-10 h-10 bg-mustard text-white rounded-full font-black">✕</button>
+    <div id="overlay" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="bg-white dark:bg-slate-900 p-6 flex flex-col">
+        <div class="mb-10 flex flex-col items-center">
+            <img src="logo.png" alt="Logo" class="w-16 mb-2">
+            <h2 class="text-xl font-black italic">TEMAN<span class="mustard-brand">ZAYD</span></h2>
         </div>
-    </div>
-
-    <button onclick="toggleDarkMode()" class="fixed bottom-6 right-6 z-[100] w-12 h-12 bg-mustard rounded-full shadow-lg flex items-center justify-center text-xl">
-        <span id="dark-icon">🌙</span>
-    </button>
-
-    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 py-4 flex justify-around border-b border-gray-100 dark:border-slate-800 overflow-x-auto whitespace-nowrap">
-        <button onclick="showPage('home')" id="nav-home" class="nav-item py-2 px-2 active">Beranda</button>
-        <button onclick="showPage('about')" id="nav-about" class="nav-item py-2 px-2">Mitra</button>
-        <button onclick="showPage('program')" id="nav-program" class="nav-item py-2 px-2">Program</button>
-        <button onclick="showPage('ajukan')" id="nav-ajukan" class="nav-item py-2 px-2">Ajukan</button>
-        <button onclick="showPage('media')" id="nav-media" class="nav-item py-2 px-2">Media</button>
-        <button onclick="showPage('team')" id="nav-team" class="nav-item py-2 px-2">Kami</button>
-        <button onclick="showPage('donation')" id="nav-donation" class="nav-item py-2 px-2">Donasi</button>
-        <button onclick="showPage('contact')" id="nav-contact" class="nav-item py-2 px-2">Hubungi</button>
-    </nav>
-
-    <main class="flex-grow p-5 space-y-6">
         
-        <section id="home" class="page active space-y-5 text-center">
-            <div class="py-4">
+        <nav class="flex-grow">
+            <button onclick="navTo('home')" id="nav-home" class="nav-item-side active"><span>🏠</span> Beranda</button>
+            <button onclick="navTo('about')" id="nav-about" class="nav-item-side"><span>🤝</span> Mitra</button>
+            <button onclick="navTo('program')" id="nav-program" class="nav-item-side"><span>💎</span> Program</button>
+            <button onclick="navTo('ajukan')" id="nav-ajukan" class="nav-item-side"><span>📝</span> Ajukan</button>
+            <button onclick="navTo('media')" id="nav-media" class="nav-item-side"><span>📸</span> Media</button>
+            <button onclick="navTo('team')" id="nav-team" class="nav-item-side"><span>👥</span> Kami</button>
+            <button onclick="navTo('donation')" id="nav-donation" class="nav-item-side"><span>💰</span> Donasi</button>
+            <button onclick="navTo('contact')" id="nav-contact" class="nav-item-side"><span>📞</span> Hubungi</button>
+        </nav>
+
+        <div class="mt-auto opacity-30 text-[10px] font-bold uppercase tracking-widest text-center">
+            v2.0 • 2026
+        </div>
+    </aside>
+
+    <header class="fixed top-0 w-full z-[900] bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-100 dark:border-slate-800 p-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleSidebar()" class="text-2xl p-2 focus:outline-none">☰</button>
+            <h1 class="text-lg font-black italic uppercase tracking-tighter">TEMAN<span class="mustard-brand">ZAYD</span></h1>
+        </div>
+        <button onclick="toggleDarkMode()" class="w-10 h-10 bg-mustard rounded-full flex items-center justify-center text-xl shadow-lg">
+            <span id="dark-icon">🌙</span>
+        </button>
+    </header>
+
+    <main class="p-5 flex-grow">
+        
+        <section id="home" class="page active space-y-5">
+            <div class="text-center py-6">
                 <img src="logo.png" alt="Logo" class="w-24 mx-auto mb-4">
-                <h1 class="text-4xl font-black italic uppercase tracking-tighter text-black dark:text-white">TEMAN<span class="mustard-brand">ZAYD</span></h1>
-                <p class="text-[10px] tracking-[0.3em] uppercase opacity-40 mt-1 font-bold italic dark:text-white">Berbagi Bersama Untuk Sesama</p>
+                <p class="text-[10px] tracking-[0.3em] uppercase opacity-40 font-bold italic dark:text-white text-center">Berbagi Bersama Untuk Sesama</p>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                <div class="glass-card p-5 rounded-3xl border-b-4 border-f2b84b">
+                <div class="glass-card p-5 border-b-4 border-f2b84b text-center">
                     <div class="text-3xl font-black mustard-brand">> 5.000+</div>
-                    <div class="text-[10px] uppercase tracking-widest opacity-60 font-black dark:text-white">Penerima Manfaat</div>
+                    <div class="text-[10px] uppercase font-black dark:text-white">Penerima Manfaat</div>
                 </div>
-                <div class="glass-card p-5 rounded-3xl border-b-4 border-f2b84b">
+                <div class="glass-card p-5 border-b-4 border-f2b84b text-center">
                     <div class="text-3xl font-black mustard-brand">30+</div>
-                    <div class="text-[10px] uppercase tracking-widest opacity-60 font-black dark:text-white">Relawan Aktif</div>
+                    <div class="text-[10px] uppercase font-black dark:text-white">Relawan Aktif</div>
                 </div>
             </div>
-            <div class="glass-card p-6 rounded-[2.5rem] text-left">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] mustard-brand mb-3">Kisah Pendirian (2021)</h3>
-                <p class="text-[13px] leading-relaxed italic opacity-80 dark:text-white">
-                    Lahir dari pengalaman pribadi <span class="font-bold">Ashma Mardhiyatu Musyaffa</span> & <span class="font-bold">Robby Rachmandias</span> bersama putra mereka, <span class="font-bold">Zayd (Cancer Warrior)</span>. TemanZayd hadir untuk menemani para pejuang sehat lainnya.
-                </p>
+            <div class="glass-card p-6">
+                <h3 class="text-[11px] font-black uppercase mustard-brand mb-3">Kisah Pendirian (2021)</h3>
+                <p class="text-[13px] leading-relaxed italic opacity-80 dark:text-white">Lahir dari pengalaman pribadi Ashma Mardhiyatu Musyaffa & Robby Rachmandias bersama putra mereka, Zayd (Cancer Warrior).</p>
             </div>
-            <div class="space-y-3 text-left">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] px-2 opacity-40 dark:text-white">Tujuan & Misi</h3>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4"><div class="text-xl">🤝</div><p class="text-[12px] font-medium dark:text-white">Memberikan dukungan langsung bagi pejuang sehat, nafkah, yatim, dhuafa, dan korban bencana.</p></div>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4"><div class="text-xl">💎</div><p class="text-[12px] font-medium dark:text-white">Menyelenggarakan program pemberdayaan berkelanjutan dengan transparansi dan amanah.</p></div>
-                <div class="glass-card p-4 rounded-2xl flex items-center space-x-4"><div class="text-xl">✨</div><p class="text-[12px] font-medium dark:text-white">Menyebarkan nilai kebaikan melalui dakwah dan penggalangan semangat gotong royong.</p></div>
+            <div class="space-y-3">
+                <div class="glass-card p-4 flex items-center gap-4"><span>🤝</span><p class="text-xs dark:text-white">Dukungan bagi pejuang sehat, nafkah, yatim, dhuafa, dan korban bencana.</p></div>
+                <div class="glass-card p-4 flex items-center gap-4"><span>💎</span><p class="text-xs dark:text-white">Program pemberdayaan berkelanjutan dengan transparansi.</p></div>
+                <div class="glass-card p-4 flex items-center gap-4"><span>✨</span><p class="text-xs dark:text-white">Menyebarkan nilai kebaikan melalui gotong royong.</p></div>
             </div>
         </section>
 
         <section id="ajukan" class="page space-y-4">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter text-center mb-6 dark:text-white">Pusat <span class="mustard-brand">Pengajuan</span></h2>
-
-            <div class="glass-card rounded-[2rem] accordion-item active" id="acc-susu">
+            <h2 class="text-2xl font-black italic uppercase text-center mb-6 dark:text-white">Pusat <span class="mustard-brand">Pengajuan</span></h2>
+            <div class="glass-card accordion-item active" id="acc-susu">
                 <div class="accordion-header" onclick="toggleAccordion('acc-susu')">
-                    <span class="font-black text-xs uppercase tracking-widest dark:text-white">#KalengSusuKebaikan</span>
+                    <span class="font-black text-xs uppercase dark:text-white">#KalengSusuKebaikan</span>
                     <span class="mustard-brand font-bold text-xl">▼</span>
                 </div>
                 <div class="accordion-content px-6 pb-6">
                     <form id="formSusu" class="space-y-1">
                         <input type="hidden" name="Tipe_Form" value="Pengajuan Kaleng Susu">
                         <input type="text" name="Nama_Pasien" placeholder="Nama Pasien" required class="input-style">
-                        <input type="text" name="Umur" placeholder="Umur (Contoh: 16 Bulan / 3 Thn 5 Bln)" required class="input-style">
-                        <select name="Jenis_Kelamin" required class="input-style"><option value="" disabled selected>Jenis Kelamin</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
-                        <textarea name="Alamat" placeholder="Alamat Lengkap Domisili" required class="input-style h-24"></textarea>
-                        <input type="text" name="Diagnosa" placeholder="Penyakit/Diagnosa" required class="input-style">
-                        <input type="text" name="Merk_Susu" placeholder="Jenis/Merk/Varian Susu (Saran Dokter)" required class="input-style">
-                        <input type="text" name="Nama_Pendamping" placeholder="Nama Pendamping" required class="input-style">
-                        <input type="number" name="WA_Pendamping" placeholder="Kontak Pendamping (WhatsApp)" required class="input-style">
-                        <input type="url" name="Link" placeholder="Link GDrive (Diagnosa, Foto, SKTM)" required class="input-style">
-                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Pengajuan</button>
+                        <input type="text" name="Umur" placeholder="Umur" required class="input-style">
+                        <select name="Gender" required class="input-style"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select>
+                        <textarea name="Alamat" placeholder="Alamat Domisili" required class="input-style h-24"></textarea>
+                        <input type="text" name="Diagnosa" placeholder="Diagnosa" required class="input-style">
+                        <input type="text" name="Merk_Susu" placeholder="Merk & Varian" required class="input-style">
+                        <input type="number" name="WA" placeholder="WA Pendamping" required class="input-style">
+                        <input type="url" name="Link" placeholder="Link GDrive" required class="input-style">
+                        <button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Kirim</button>
                     </form>
                 </div>
             </div>
+            </section>
 
-            <div class="glass-card rounded-[2rem] accordion-item" id="acc-rumah">
-                <div class="accordion-header" onclick="toggleAccordion('acc-rumah')">
-                    <span class="font-black text-xs uppercase tracking-widest text-left dark:text-white">Asesmen Rumah Singgah</span>
-                    <span class="mustard-brand font-bold text-xl">▼</span>
+        <section id="donation" class="page space-y-6 text-center">
+            <div class="glass-card p-8 border-t-4 border-f2b84b">
+                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto cursor-pointer">
+                    <img src="qr.jpg" alt="QR" class="w-full h-full object-contain">
+                    <p class="text-[8px] font-black uppercase mt-2 opacity-30">Tap to Zoom</p>
                 </div>
-                <div class="accordion-content px-6 pb-6">
-                    <form id="formRumah" class="space-y-1">
-                        <input type="hidden" name="Tipe_Form" value="Asesmen Rumah Singgah">
-                        <input type="text" name="Nama_Lengkap_Anak" placeholder="Nama Lengkap Anak" required class="input-style">
-                        <input type="text" name="Usia_Anak" placeholder="Usia Anak" required class="input-style">
-                        <select name="Jenis_Kelamin" required class="input-style"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
-                        <input type="text" name="Penyakit_Diagnosa" placeholder="Penyakit atau diagnosa anak" required class="input-style">
-                        <select name="Ada_Surat_Diagnosa" required class="input-style"><option value="" disabled selected>Apakah ada surat keterangan dokter?</option><option value="Ada">Ada</option><option value="Tidak Ada">Tidak Ada</option></select>
-                        <input type="text" name="Merk_Jenis_Susu" placeholder="Merk dan jenis susu" required class="input-style">
-                        <input type="text" name="Kebutuhan_Susu_Per_Bulan" placeholder="Kebutuhan susu per bulan" required class="input-style">
-                        <select name="Rutin_Pengobatan_Terapi" required class="input-style"><option value="" disabled selected>Anak sedang rutin pengobatan/terapi?</option><option value="Ya">Ya</option><option value="Tidak">Tidak</option></select>
-                        <textarea name="Penjelasan_Terapi" placeholder="Jelaskan terapi yang dijalani" class="input-style h-20"></textarea>
-                        <input type="text" name="Nama_Orang_Tua_Wali" placeholder="Nama orang tua/wali" required class="input-style">
-                        <input type="number" name="Nomor_HP_WA" placeholder="Nomor HP/WA Pendamping" required class="input-style">
-                        <textarea name="Alamat_Lengkap" placeholder="Alamat lengkap tempat tinggal saat ini" required class="input-style h-20"></textarea>
-                        <input type="number" name="Jumlah_Anggota_Keluarga" placeholder="Jumlah anggota keluarga 1 rumah" required class="input-style">
-                        <input type="text" name="Pekerjaan_Orang_Tua" placeholder="Pekerjaan Orang Tua (Ayah dan Ibu)" required class="input-style">
-                        <select name="Merokok_Aktif" required class="input-style"><option value="" disabled selected>Ada keluarga merokok aktif?</option><option value="Ya">Ya</option><option value="Tidak">Tidak</option></select>
-                        <input type="text" name="Estimasi_Penghasilan" placeholder="Estimasi penghasilan keluarga per bulan" required class="input-style">
-                        <input type="text" name="Bantuan_Pihak_Lain" placeholder="Keluarga menerima bantuan pihak lain?" required class="input-style">
-                        <input type="url" name="Link_Foto_Terkini" placeholder="Link Foto Terkini Anak" required class="input-style">
-                        <input type="url" name="Link_Dokumen_Pendukung" placeholder="Link Dokumen Pendukung Lainnya" required class="input-style">
-                        <select name="Persetujuan_Asesmen" required class="input-style"><option value="Bersedia">Bersedia data digunakan untuk asesmen</option></select>
-                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Asesmen</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="glass-card rounded-[2rem] accordion-item" id="acc-play">
-                <div class="accordion-header" onclick="toggleAccordion('acc-play')">
-                    <span class="font-black text-xs uppercase tracking-widest dark:text-white">Pendaftaran PlaydateRTZ</span>
-                    <span class="mustard-brand font-bold text-xl">▼</span>
-                </div>
-                <div class="accordion-content px-6 pb-6">
-                    <form id="formPlay" class="space-y-1">
-                        <input type="hidden" name="Tipe_Form" value="Pendaftaran Playdate">
-                        <input type="text" name="Nama_Anak" placeholder="Nama Anak" required class="input-style">
-                        <input type="text" name="Usia_Anak" placeholder="Usia Anak" required class="input-style">
-                        <select name="Jenis_Kelamin" required class="input-style"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
-                        <input type="text" name="Diagnosa_Kondisi" placeholder="Diagnosa/Kondisi Kesehatan" required class="input-style">
-                        <input type="text" name="Alat_Bantu" placeholder="Alat Bantu yang Digunakan" required class="input-style">
-                        <input type="text" name="Asal_Daerah_Kota" placeholder="Asal Daerah/Kota" required class="input-style">
-                        <input type="text" name="Rumah_Singgah" placeholder="Rumah Singgah (Jika ada)" class="input-style">
-                        <input type="text" name="Nama_Pendamping" placeholder="Nama Pendamping" required class="input-style">
-                        <input type="text" name="Hubungan_Pendamping" placeholder="Hubungan Pendamping dengan Anak" required class="input-style">
-                        <input type="number" name="Nomor_WhatsApp" placeholder="Nomor WhatsApp" required class="input-style">
-                        <select name="Dokumentasi_Sosmed" required class="input-style"><option value="" disabled selected>Berkenan didokumentasikan di sosmed?</option><option value="Ya">Ya</option><option value="Tidak">Tidak</option></select>
-                        <select name="Datang_Mandiri" required class="input-style"><option value="Ya">Bersedia datang mandiri ke lokasi</option></select>
-                        <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Daftar Playdate</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="page space-y-4"><h2 class="text-2xl font-black italic uppercase tracking-tighter text-center dark:text-white">Sinergi <span class="mustard-brand">Kolaborasi</span></h2><div id="mitra-grid" class="grid grid-cols-2 gap-3"></div></section>
-        <section id="program" class="page space-y-4"><h2 class="text-2xl font-black italic uppercase tracking-tighter text-center dark:text-white">Program <span class="mustard-brand">Kebaikan</span></h2><div id="program-grid" class="grid grid-cols-2 gap-3"></div></section>
-
-        <section id="media" class="page space-y-6 pt-4 text-center">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-6 dark:text-white">Media <span class="mustard-brand">& Aktivitas</span></h2>
-            <div class="space-y-6">
-                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe></div>
-                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DXZSDrMD0Jf/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe></div>
-                <div class="glass-card overflow-hidden rounded-[2.5rem]"><iframe src="https://www.instagram.com/p/DSXQ8sWD7XV/embed" class="w-full h-[500px]" loading="lazy" frameborder="0"></iframe></div>
-            </div>
-            <div class="pt-4"><a href="https://www.instagram.com/temanzayd" target="_blank" class="inline-block w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Buka Instagram @temanzayd</a></div>
-        </section>
-
-        <section id="team" class="page space-y-8 pt-4"><div class="photo-frame mx-auto max-w-sm"><img src="face1.jpg" class="w-full h-auto"></div><div class="photo-frame mx-auto max-w-sm"><img src="face2.jpg" class="w-full h-auto"></div></section>
-
-        <section id="donation" class="page space-y-6 pt-4 text-center">
-            <div class="glass-card p-8 rounded-[3rem] border-t-4 border-f2b84b">
-                <div onclick="openQR()" class="bg-gray-50 dark:bg-slate-800 p-4 rounded-3xl inline-block mb-6 w-3/5 aspect-square flex flex-col items-center justify-center mx-auto cursor-pointer group"><img src="qr.jpg" alt="QR" class="w-full h-full object-contain"><p class="text-[8px] font-black uppercase mt-2 opacity-30 group-hover:opacity-100 transition">Klik untuk Zoom</p></div>
-                <button onclick="copyRekening()" class="relative text-black dark:text-white"><p id="rekening" class="text-4xl font-mono font-black tracking-tighter">7326328938</p><div id="copy-toast" class="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] py-1 px-3 rounded-full opacity-0">Tersalin!</div></button>
+                <button onclick="copyRekening()"><p id="rekening" class="text-4xl font-mono font-black text-black dark:text-white">7326328938</p></button>
                 <p class="text-sm font-black mustard-brand uppercase tracking-widest">a.n TEMANZAYD</p>
             </div>
-            <form id="formDonasi" class="glass-card p-6 rounded-[2.5rem] space-y-1 text-left">
+            <form id="formDonasi" class="glass-card p-6 space-y-1 text-left">
                 <input type="hidden" name="Tipe_Form" value="Konfirmasi Donasi">
-                <input type="text" name="Nama_Donatur" placeholder="Nama Donatur" required class="input-style">
+                <input type="text" name="Nama_Donatur" placeholder="Nama" required class="input-style">
                 <input type="number" name="Nominal" placeholder="Nominal Rp" required class="input-style">
                 <select id="program_tujuan_select" name="Program" required class="input-style font-bold opacity-60"></select>
-                <button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Konfirmasi WhatsApp</button>
+                <button type="submit" class="w-full py-4 bg-mustard font-black uppercase rounded-2xl text-[12px]">Konfirmasi</button>
             </form>
         </section>
 
-        <section id="contact" class="page space-y-6 pt-4 text-center">
-            <h2 class="text-2xl font-black italic uppercase tracking-tighter mb-2 text-center dark:text-white">Hubungi <span class="mustard-brand">Kami</span></h2>
-            <div class="space-y-4">
-                <a href="https://wa.me/6282261814595" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition text-left"><div>💬</div><div><p class="text-[10px] uppercase font-black opacity-40 mb-1">WhatsApp Admin</p><p class="text-sm font-bold dark:text-white">Salma (Admin TemanZayd)</p></div></a>
-                <a href="https://www.instagram.com/temanzayd" target="_blank" class="glass-card p-5 rounded-3xl flex items-center space-x-5 active:scale-95 transition text-left"><div>📸</div><div><p class="text-[10px] uppercase font-black opacity-40 mb-1">Instagram</p><p class="text-sm font-bold dark:text-white">@temanzayd</p></div></a>
-            </div>
-            <div class="glass-card p-6 rounded-[2.5rem] text-left"><form id="formHubungi" class="space-y-1"><input type="hidden" name="Tipe_Form" value="Pertanyaan Umum"><input type="text" name="Nama" placeholder="Nama" required class="input-style"><input type="text" name="Kontak" placeholder="WA / Email" required class="input-style"><textarea name="Pesan" placeholder="Pesan" required class="input-style h-32"></textarea><button type="submit" class="w-full py-5 bg-mustard font-black uppercase tracking-widest rounded-3xl text-[12px]">Kirim Pesan</button></form></div>
+        <section id="about" class="page"><div id="mitra-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="program" class="page"><div id="program-grid" class="grid grid-cols-2 gap-3"></div></section>
+        <section id="media" class="page space-y-6">
+            <iframe src="https://www.instagram.com/p/DPfpEheD5yN/embed" class="w-full h-[500px] rounded-[2rem]" frameborder="0"></iframe>
         </section>
-    </main>
+        <section id="team" class="page space-y-8">
+            <div class="photo-frame"><img src="face1.jpg" class="w-full h-auto"></div>
+            <div class="photo-frame"><img src="face2.jpg" class="w-full h-auto"></div>
+        </section>
+        <section id="contact" class="page space-y-6 text-center">
+            <a href="https://wa.me/6282261814595" class="glass-card p-5 flex items-center gap-4"><span>💬</span><p class="font-bold dark:text-white">WhatsApp Admin Salma</p></a>
+            <a href="https://www.instagram.com/temanzayd" class="glass-card p-5 flex items-center gap-4"><span>📸</span><p class="font-bold dark:text-white">Instagram @temanzayd</p></a>
+        </section>
 
-    <footer class="py-10 text-center opacity-30 text-[9px] font-bold tracking-[0.5em] uppercase italic text-black dark:text-white">Jabodetabek • Riau • Lampung</footer>
+    </main>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXopbbzX7ndIVu4bIeyZJW6HHODjxjb6Y_3pic1TjWkaYOe6CDk7x9anhIAjPpAiT1UQ/exec';
-        function toggleAccordion(id) { const item = document.getElementById(id); const isActive = item.classList.contains('active'); document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active')); if (!isActive) item.classList.add('active'); }
-        async function handleForm(event, callback) {
-            event.preventDefault(); const form = event.target; const btn = form.querySelector('button[type="submit"]'); const originalText = btn.innerText; btn.innerText = "MENGIRIM..."; btn.disabled = true;
-            try {
-                const formData = new FormData(form); const params = new URLSearchParams(); formData.forEach((v, k) => params.append(k, v));
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params });
-                if (callback) callback(formData); form.reset(); alert("Berhasil Terkirim!");
-            } catch (e) { alert("Gagal mengirim."); } finally { btn.innerText = originalText; btn.disabled = false; }
+
+        // SIDEBAR & NAVIGATION
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
         }
-        document.getElementById('formDonasi').addEventListener('submit', (e) => handleForm(e, (d) => { window.location.href = `https://wa.me/6282261814595?text=Konfirmasi Donasi:%0ANama: ${d.get('Nama_Donatur')}%0ANominal: Rp${d.get('Nominal')}%0AProgram: ${d.get('Program')}`; }));
-        ['formSusu', 'formRumah', 'formPlay', 'formHubungi'].forEach(id => document.getElementById(id).addEventListener('submit', (e) => handleForm(e)));
-        function showPage(pId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById(pId).classList.add('active'); document.getElementById('nav-' + pId).classList.add('active'); window.scrollTo({top: 0, behavior: 'smooth'}); }
-        function openQR() { document.getElementById('qr-modal').style.display = 'flex'; }
-        function closeQR() { document.getElementById('qr-modal').style.display = 'none'; }
-        function copyRekening() { navigator.clipboard.writeText('7326328938'); const t = document.getElementById('copy-toast'); t.style.opacity = '1'; setTimeout(() => t.style.opacity = '0', 2000); }
+
+        function navTo(pId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item-side').forEach(n => n.classList.remove('active'));
+            document.getElementById(pId).classList.add('active');
+            document.getElementById('nav-' + pId).classList.add('active');
+            toggleSidebar(); // AUTO-HIDE
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            const isActive = item.classList.contains('active');
+            document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+            if (!isActive) item.classList.add('active');
+        }
+
+        async function handleForm(event, callback) {
+            event.preventDefault();
+            const form = event.target;
+            const btn = form.querySelector('button[type="submit"]');
+            btn.innerText = "SABAR..."; btn.disabled = true;
+            try {
+                const formData = new FormData(form);
+                const params = new URLSearchParams();
+                formData.forEach((v, k) => params.append(k, v));
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: params });
+                if (callback) callback(formData);
+                form.reset(); alert("OK! Terkirim.");
+            } catch (e) { alert("Gagal."); } finally { btn.innerText = "KIRIM"; btn.disabled = false; }
+        }
+
+        document.getElementById('formDonasi').addEventListener('submit', (e) => handleForm(e, (d) => {
+            window.location.href = `https://wa.me/6282261814595?text=Konfirmasi Donasi:%0ANama: ${d.get('Nama_Donatur')}%0ANominal: ${d.get('Nominal')}%0AProgram: ${d.get('Program')}`;
+        }));
+
+        function showPage(pId) { navTo(pId); } // Bridge function for original buttons
         function toggleDarkMode() { document.documentElement.classList.toggle('dark'); document.getElementById('dark-icon').innerText = document.documentElement.classList.contains('dark') ? '☀️' : '🌙'; }
-        
-        const mitras = ["Adara Relief International", "KNRP", "Warung Makan Relawan", "Yayasan Cahaya Madani Indonesia", "Gemma Insani Foundation", "Rumah Singgah Bunda Peduli", "Rumah Singgah ASF Berbagi", "Shelter Sahabat Peduli", "RSCM Jakarta", "DKM Masjid AsySyifa RSCM", "Pondok Tahfidz Quran FORDAI", "Ade and Friends", "Kak Susi & Friends", "Bagi Indonesia", "Elitery Indo", "Perindu Syurga", "Rumah Belajar Ceria", "MRI Jakarta Barat", "MRI Cimahi", "The Glow Room", "Hanania Travel", "IAP", "Purple Moment Fighter", "Career Class Id", "Life For Ummah Indonesia"];
-        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#TemanZaydBersamaPalestina", i: "🇵🇸"}, {n: "#BulirBerasKebaikan", i: "🌾"}, {n: "#KotakMakanKebaikan", i: "🍱"}, {n: "#BorongBareng", i: "🛒"}, {n: "#BelanjaBareng", i: "🛍️"}, {n: "#FightersDayOut", i: "🎈"}, {n: "#MeetTheFighters", i: "🤩"}, {n: "#KolaborAksiKebaikan", i: "🤝"}, {n: "#KadoUntukSantri", i: "🎁"}, {n: "#BantuBarengPejuangSehat", i: "🏥"}, {n: "#BantuBarengPejuangNafkah", i: "🛠️"}, {n: "#JumatBerkahBerbagi", i: "🕌"}, {n: "#TemanZaydBersamaPenyintas", i: "🤍"}, {n: "#SedekahUmum", i: "✨"}];
-        
-        const mGrid = document.getElementById('mitra-grid');
-        mitras.forEach(m => { mGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex items-center justify-center h-20 text-center dark:text-white"><div class="mr-2 text-lg">🤝</div><span class="text-[10px] font-extrabold uppercase leading-tight">${m}</span></div>`; });
-        const pGrid = document.getElementById('program-grid'); const pSelect = document.getElementById('program_tujuan_select');
-        pSelect.innerHTML = '<option value="" disabled selected>Pilih Program Donasi</option>';
+
+        // ISI DATA
+        const mitras = ["Adara Relief", "KNRP", "Warung Makan Relawan", "RSCM", "Elitery", "Life For Ummah"];
+        const progs = [{n: "#KalengSusuKebaikan", i: "🍼"}, {n: "#SedekahUmum", i: "✨"}];
+
+        mitras.forEach(m => { document.getElementById('mitra-grid').innerHTML += `<div class="glass-card p-4 h-20 flex items-center justify-center text-center dark:text-white"><span>🤝 ${m}</span></div>`; });
+        const pSelect = document.getElementById('program_tujuan_select');
         progs.forEach(p => {
-            pGrid.innerHTML += `<div class="glass-card p-4 rounded-2xl flex flex-col justify-between h-24 border-l-4 border-f2b84b dark:text-white"><div class="text-2xl">${p.i}</div><span class="text-[10px] font-black uppercase italic">${p.n}</span></div>`;
+            document.getElementById('program-grid').innerHTML += `<div class="glass-card p-4 h-24 flex flex-col justify-between border-l-4 border-f2b84b dark:text-white"><div>${p.i}</div><span class="text-[10px] font-black">${p.n}</span></div>`;
             const opt = document.createElement('option'); opt.value = p.n; opt.text = `${p.i} ${p.n}`; pSelect.appendChild(opt);
         });
     </script>
